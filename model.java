@@ -1,5 +1,6 @@
 import java.util.*;
 import org.json.*;
+import extraction.java
 
 public class model {
 	/*Convert JSON data into HashMap.*/
@@ -37,5 +38,14 @@ public class model {
 	public void addFave(Map<String, String>faveList, String cityName){
 		
 	}
+	
+	public void removeFave(){
+		
+	}
+	
+	public void refreshData(){
+		
+	}
+	
 	
 }
