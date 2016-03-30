@@ -35,6 +35,10 @@ public class model {
 		return url;
 	}
 	
+	public void init_fave(){
+		
+	}
+	
 	public void addFave(Map<String, String>faveList, String cityName){
 		
 	}
