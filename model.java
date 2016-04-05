@@ -1,6 +1,6 @@
 import java.util.*;
 import org.json.*;
-import extraction.java
+import Extraction.java
 
 public class model {
 	/*Convert JSON data into HashMap.*/
@@ -98,8 +98,8 @@ public class model {
 		
 	}
 	
-	public void refreshData(){
-		
+	public JSONArray getData(){
+		return new Extraction.getStationData();
 	}
 	
 	
