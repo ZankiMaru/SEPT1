@@ -1,9 +1,12 @@
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
+import java.util.*;
 
 public class Main {
 	public static void main(String[] args){
+		
+		HashMap dataStructure = new HashMap();
+		HashMap faveList = new HashMap();
 		
 		/* Checks for favorite stations */
 		

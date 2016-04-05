@@ -1,5 +1,7 @@
 import java.util.*;
 import org.json.*;
+import java.io.FileWriter;
+import java.io.IOException;
 import Extraction.java
 
 public class model {
@@ -36,46 +38,7 @@ public class model {
 		return url;
 	}
 	
-	/*
-	Converts JSON file containing favourites into HashMap.
-	e.g.
-	[
-		{
-			"city" : "middle of nowhere",
-			"state" : "somewhere in Tasmania"
-		},
-		{
-			"city" : "Melbourne",
-			"state" : "Victoria"
-		},
-		{
-			"city" : "potato",
-			"state" : "tomato"
-		}
-	]
-	This can be called an array of objects, anything within [] is called a JSONArray, and anything within {} is called a JSONObject.
-	So this would be a JSONArray filled with JSONObjects, whereas a file such as:
-	{
-		"city" : "middle of nowhere",
-		"state" : "somewhere in Tasmania"
-	}
-	Would only be called a JSONObject because there are no [], also:
-	{
-		[
-			{
-				"city" : "middle of nowhere",
-				"state" : "somewhere in Tasmania"
-			},
-			{
-				"city" : "Melbourne",
-				"state" : "Victoria"
-			}
-		]
-	}
-	Would mean it's a JSONObject that contains a JSONArray, and the JSONArray contains 2 JSONObjects.
-	Hope this helps, please delete this comment eventually.
-	*/
-	public void init_fave(JSONArray source){
+	public void loadFaveList(JSONArray source){
 		JSONParser parser = parser.parse();
 		Object jsonObject = parser.parse(source);
 		JSONArray listOfFaves = (JSONArray)jsonObject;
@@ -90,12 +53,24 @@ public class model {
 		return faves;
 	}
 	
-	public void addFave(Map<String, String>faveList, String cityName){
-		
+	public void addFave(Map<String, String>faveList, String cityName, String stateName){
+		faveList.put(cityName, stateName);
 	}
 	
-	public void removeFave(){
-		
+	public void removeFave(Map<String, String>faveList, String cityName){
+		faveList.remove(cityName);
+	}
+	
+	public void saveFaveList(Map<String, String>faveList){
+		JSONObject obj = new JSONObject(faveList);
+		try (FileWriter outputFile = new FileWriter("faveList.json")){
+			file.write(obj.toJSONString());
+		}catch{
+			e.printStackTrace();
+		}finally{
+			file.flush();
+			file.close();
+		}
 	}
 	
 	public JSONArray getStationData(){
