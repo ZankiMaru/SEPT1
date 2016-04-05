@@ -98,7 +98,7 @@ public class model {
 		
 	}
 	
-	public JSONArray getData(){
+	public JSONArray getStationData(){
 		return new Extraction.getStationData();
 	}
 	
