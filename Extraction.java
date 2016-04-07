@@ -58,7 +58,7 @@ class Extraction {
       
 		/* Next is to parse the whole page string as a JSONObject and extract
 		 * the needed data. In this example, it prints the name of the site 
-		 * and the weather at every half hour. */
+		 * and the weather at every half an hour. */
 		try{
 			Object obj = parser.parse(text);
 			JSONObject result = (JSONObject)obj;
