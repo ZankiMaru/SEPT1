@@ -2,4 +2,5 @@
 2. Add favourite station
 3. Remove favourite station
 4. Monitor weather of multiple stations simultaneously
+5. The stations and the associated data are displayed as a table
 5. Refresh weather table
