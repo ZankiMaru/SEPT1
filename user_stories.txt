@@ -1,6 +1,8 @@
 1. Monitor weather of station
 2. Add favourite station
 3. Remove favourite station
-4. Monitor weather of multiple stations simultaneously
-5. The stations and the associated data are displayed as a table
-5. Refresh weather table
+4. System stores favourites for next boot up
+5. Monitor weather of multiple stations simultaneously
+6. The stations and the associated data are displayed as a table
+7. Refresh weather table
+ 
