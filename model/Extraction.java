@@ -1,3 +1,5 @@
+package model;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -14,17 +16,19 @@ import org.json.simple.parser.JSONParser;
 /* Extraction class is used to extract information from the website's JSON file.
  * Extraction class will be able to return values from the website's JSON into
  * Model class for the application to use. */
-class Extraction {
+public class Extraction {
 
 	/* The function used to debug the Extraction class easier. */
 //   public static void main(String[] args){
-//      
+      
 //      String site;
-////      printAllStations();
-//      
+//      printAllStations();
+//        JSONArray x = getAllStateCities("victoria");
 //      site = findSiteUrl("Melbourne Olympic Park");
-////      System.out.println(site);
+//      getStationData(site);
+//      System.out.println(site);
 //      printSiteWeather(site);
+//      getAllStates();
 //   }
    
 	/* printSiteWeather function is the example of how to extract the weather
@@ -146,6 +150,8 @@ class Extraction {
 		}
 	}
 
+	/* getStationData function is used to return a JSONArray containing the 
+	 * station datas from an url. */
 	public static JSONArray getStationData (String siteUrl)
 	{
 	    JSONParser parser = new JSONParser();
@@ -182,7 +188,6 @@ class Extraction {
             JSONObject obs = (JSONObject) result.get("observations");
             
             JSONArray datas = (JSONArray) obs.get("data");
-            
             return datas;
             
         }catch(ParseException pe){
@@ -190,4 +195,60 @@ class Extraction {
         }
         return null;
 	}
+
+	/* getAllStates function is used to return a JSONArray containing all of
+	 *  the states data. */
+	public static JSONArray getAllStates() {
+      JSONParser parser = new JSONParser();
+      String path = "input.json";
+      JSONArray result = null;
+      
+      try{
+         FileReader file = new FileReader(path);
+         Object obj = parser.parse(file);
+         result = (JSONArray)obj;
+         
+      }catch(ParseException pe){
+         System.out.println(pe);
+      }
+      catch (FileNotFoundException e){
+         e.printStackTrace();
+      }
+      catch (IOException e){
+         e.printStackTrace();
+      }
+      
+      return result;
+	}
+	
+	/* getStateCities function is used to return a JSONArray containing the
+	 * state's cities data. */
+	public static JSONArray getStateCities(String stateName) {
+	   JSONParser parser = new JSONParser();
+	   String path = "input.json";
+	   JSONArray sites = null;
+	   
+	   try{
+	      FileReader file = new FileReader(path);
+	      Object obj = parser.parse(file);
+	      JSONArray result = (JSONArray)obj;
+	      for(int i = 0; i<result.size();i++){
+	         JSONObject states = (JSONObject) result.get(i);
+	         
+	         if(stateName.equalsIgnoreCase((String)states.get("state")))
+	            sites = (JSONArray) states.get("stations");
+	      }  
+	   }catch(ParseException pe){
+	      System.out.println(pe);
+	   }
+	   catch (FileNotFoundException e){
+	      e.printStackTrace();
+	   }
+	   catch (IOException e){
+	      e.printStackTrace();
+	   }
+	   return sites;
+	}
+
+	
 }

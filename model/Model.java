@@ -1,13 +1,18 @@
+package model;
 import java.util.*;
+
 import org.json.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 import java.io.FileWriter;
 import java.io.IOException;
-import Extraction.java
 
-public class model {
+public class Model {
 	/*Convert JSON data into HashMap.*/
 	public void init_data(JSONArray source){
-		JSONParser parser = parser.parse();
+		JSONParser parser = new JSONParser();
 		Object jsonObject = parser.parse(source);
 		JSONArray listOfStates = (JSONArray)jsonObject;
 		
