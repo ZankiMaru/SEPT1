@@ -10,9 +10,8 @@ public class Main {
    
 	public static void main(String[] args){
 		
-		HashMap dataStructure = new HashMap();
-		HashMap faveList = new HashMap();
 		Model model = new Model();
+		model.init_data();
 		/* Checks for favorite stations */
 		
 		

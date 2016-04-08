@@ -11,6 +11,10 @@ public class Station
 {
     public String name;
     ArrayList<Interval> list = new ArrayList<Interval>();
+	
+	private String stateName;
+	private String stationName;
+	private String urlName;
     
     public Station(JSONArray stationData)
     //public Station(String name)
@@ -175,4 +179,28 @@ public class Station
         return day;
     }
     */
+	
+	public void setState(String name){
+		this.stateName = name;
+	}
+	
+	public void setStation(String name){
+		this.stationName = name;
+	}
+	
+	public void setUrl(String name){
+		this.urlName = name;
+	}
+	
+	public void getState(String name){
+		return this.stateName;
+	}
+	
+	public String getStation(){
+		return this.stationName;
+	}
+	
+	public String getUrl(){
+		return this.urlName;
+	}
 }

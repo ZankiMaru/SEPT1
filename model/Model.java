@@ -5,12 +5,12 @@ import org.json.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import StationUrl.java;
+import Station.java;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class Model {
-	private HashMap<String, HashMap<String, StationUrl>> listOfStates = new HashMap<String, HashMap<String, StationUrl>>;
+	private HashMap<String, HashMap<String, Station>> listOfStates = new HashMap<String, HashMap<String, Station>>;
 	private HashMap<String, String> faves = new HashMap<String, String>;
 	
 	public void init_data(){
@@ -26,7 +26,7 @@ public class Model {
 			this.listOfstates.put(stateName);
 			
 			for (int j=0; j < listOfStations.length(); j++) {
-				StationUrl singleStation = new StationUrl();
+				Station singleStation = new Station();
 				
 				JSONObject station = (JSONObject)listOfStations.get(j);
 				String stationName = station.get("city");
@@ -42,7 +42,7 @@ public class Model {
 	}
 	
 	public String getUrl(String stateName, String stationName){
-		StationUrl station;
+		Station station;
 		String url;
 		station = this.listOfstates.get(stateName).get(stationName);
 		url = station.getUrl();
