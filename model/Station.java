@@ -19,26 +19,48 @@ public class Station
     public Station(JSONArray stationData)
     //public Station(String name)
     {
-        JSONObject nameOfStation = (JSONObject) stationData.get(0);
-        this.name = (String) nameOfStation.get("name");
-                
-        for(int i = 0; i < stationData.size(); i++){
-            JSONObject j = (JSONObject) stationData.get(i);
+       /* Error handler in case if the station data is empty */
+       if(stationData.size() != 0){
+          JSONObject nameOfStation = (JSONObject) stationData.get(0);
+          this.name = (String) nameOfStation.get("name");
+          System.out.println(this.name);
+          for(int i = 0; i < stationData.size(); i++){
+             JSONObject j = (JSONObject) stationData.get(i);
             
-            Interval interval = new Interval(
-                    (String) j.get("local_date_time_full"),
-                    (double) j.get("air_temp"),
-                    (long) j.get("wind_spd_kmh"),
-                    (String) j.get("rain_trace")
+             String localDateTime = (String) j.get("local_date_time_full");
+
+             /* Some station have a null as the air temperature */
+             double airTemp;
+             if(j.get("air_temp") == null)
+                airTemp = 0;
+             else
+                airTemp = (double) j.get("air_temp");
+
+             /* Some station have a null as the wind speed */
+             long windSpd;
+             if( j.get("wind_spd_kmh") == null)
+                windSpd = 0;
+             else
+                windSpd = (long) j.get("wind_spd_kmh");
+          
+             String rainTrace = (String) j.get("rain_trace");
+
+             Interval interval = new Interval(
+                    localDateTime,
+                    airTemp,
+                    windSpd,
+                    rainTrace
                     );
             
-            list.add(interval);
-        }
+             list.add(interval);
+          }
+       }
     }
+    
     //String timeString, String temp, String wind, String rain
     public Interval getNow()
     {
-        return list.get(0);
+       return list.get(0);
     }
     
     
@@ -192,7 +214,7 @@ public class Station
 		this.urlName = name;
 	}
 	
-	public void getState(String name){
+	public String getState(String name){
 		return this.stateName;
 	}
 	

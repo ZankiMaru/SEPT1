@@ -44,6 +44,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import controller.Main;
+import java.awt.GridLayout;
 
 /* MainMenu Class is the Swing class for the main menu of the application.
  * MainMenu Class will be populated with data and informations through 
@@ -59,7 +60,7 @@ public class MainMenu extends JFrame {
 	JPanel browsePanel;
 	JPanel favePanel;
 	static JPanel citiesPanel;
-	JPanel mainPanel;
+	static JPanel mainPanel;
 	JScrollPane favScrollPane;
 	JScrollPane browseScrollPane;
 
@@ -144,16 +145,13 @@ public class MainMenu extends JFrame {
 		});
 		
 		citiesPanel = new JPanel();
-		citiesPanel.setLayout(new FlowLayout());
 		
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new CardLayout());
 		mainPanel.add(statefavPanel, "state");
 		mainPanel.add(citiesPanel, "city");
+		citiesPanel.setLayout(new GridLayout(22, 0, 0, 0));
       getContentPane().add(mainPanel, gbc_statefavPanel);
-      
-      
-		
 	}
 
 	
@@ -230,11 +228,41 @@ public class MainMenu extends JFrame {
 	
 	private static void populateCitiesPanel(JSONArray cities)
    {
+	   citiesPanel.removeAll();
+	   citiesPanel.repaint();
+	   JButton backButton = new JButton("Back");
+	   backButton.addActionListener(new backButtonListener());
+
+      citiesPanel.add(backButton);
+      
 	   for(int j = 0; j<cities.size(); j++){
 	      JSONObject cities2 = (JSONObject) cities.get(j);
-	      System.out.println(cities2.get("city"));
-         citiesPanel.add(new JButton((String) cities2.get("city")));
-
+//	      System.out.println(cities2.get("city"));
+	      JButton cityButton = new JButton((String) cities2.get("city"));
+	      cityButton.addActionListener(new cityButtonListener());
+         citiesPanel.add(cityButton);
 	   }
    }
+	
+	  private static class backButtonListener implements ActionListener{
+	      @Override
+	      public void actionPerformed(ActionEvent arg0) {
+            CardLayout cl = (CardLayout)(mainPanel.getLayout());
+            cl.show(mainPanel, "state");            
+	      }
+	   }
+	  
+     private static class cityButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+           try { 
+              JFrame frame = new StationView(null);
+              frame.setLocationRelativeTo(null);
+              frame.setVisible(true);
+           } catch (Exception e) {
+              e.printStackTrace();
+           }
+
+        }
+     }
 }

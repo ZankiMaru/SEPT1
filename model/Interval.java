@@ -3,7 +3,6 @@ import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-
 public class Interval
 {
     String timeString;
@@ -22,7 +21,12 @@ public class Interval
         
         this.temp = temp; //comes as double
         this.wind = wind; //comes as long
-        this.rain = Double.valueOf(rain); //comes as String
+        
+        if(rain.contains("[0-1]+") == true)
+           this.rain = Double.valueOf(rain); //comes as String
+      
+        else
+           this.rain = 0;
     }
     
     //Methods to set date
