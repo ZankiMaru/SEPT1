@@ -1,3 +1,3 @@
-Station station = new Station("Station Name", Extractor.getStationData("INSERT JSON LINK HERE"));
+Station station = new Station("Station Name", "Link to JSON");
 station.getData();
 StationView view = new StationView(station);
