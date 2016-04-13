@@ -10,7 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Model {
-	private HashMap<String, HashMap<String, Station>> listOfStates = new HashMap<String, HashMap<String, Station>>();
+	private HashMap<String, State> listOfStates = new HashMap<String, State>();
 	private HashMap<String, String> faves = new HashMap<String, String>();
 	
 	public void init_data(){
@@ -18,41 +18,32 @@ public class Model {
 //		Object obj = parser.parse(new FileReader("input.json"));
 		JSONArray listOfStates = (JSONArray) Extraction.getAllStates();
 		
-		/* Reduce listOfStates.size() into 1-3 for a faster startup */
 		for (int i=0; i < listOfStates.size(); i++) {
 			JSONObject state = (JSONObject)listOfStates.get(i);
 			String stateName = (String) state.get("state");
-			System.out.println(stateName);
+			State newState = new State(stateName);
 			JSONArray listOfStations = (JSONArray)state.get("stations");
-
+			this.listOfStates.put(stateName, newState);
+			
 			for (int j=0; j < listOfStations.size(); j++) {
-			   
-	         HashMap<String, Station> stations = new HashMap<String,Station>();
-
 				JSONObject station = (JSONObject)listOfStations.get(j);
 				String stationName = (String) station.get("city");
 				String jsonUrl = (String) station.get("url");
 
-				Station singleStation = new Station( Extraction.getStationData(jsonUrl) );
+				Station singleStation = new Station();
 				
 				singleStation.setState(stateName);
 				singleStation.setStation(stationName);
 				singleStation.setUrl(jsonUrl);
-
-				stations.put(stationName, singleStation);
 				
-				this.listOfStates.put(stateName, stations);
+				this.listOfStates.get(stateName).put(stationName, singleStation);
 			};
-			
-			
 		};
 	}
 	
-	public String getUrl(String stateName, String stationName){
-		Station station;
+	public String getUrl(String stationName){
 		String url;
-		station = listOfStates.get(stateName).get(stationName);
-		url = station.getUrl();
+		url = this.listOfAllUrls.get(stationName);
 		return url;
 	}
 	
@@ -97,10 +88,15 @@ public class Model {
 //	}
 	
 	public Station getStation(String stationName){
-	   for(HashMap x : listOfStates.values() ){
-	      return (Station) x.get(stationName);
-	   }
-	   return null;
+		Station selectedStation;
+		for(String currentState : this.listOfStates.keySet()){
+			selectedStation = this.listOfStates.get(currentState).get(stationName);
+			if(selectedStation != null){
+				return selectedStation;
+			};
+		};
+		System.out.println("Station doesn't exist.\n");
+		return null;
 	}
 	
 }
