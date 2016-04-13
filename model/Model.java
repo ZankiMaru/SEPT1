@@ -41,7 +41,7 @@ public class Model {
 		};
 	}
 	
-	public String getUrl(String stationName){
+	public String getUrl(String stationName){ 
 		String url;
 		url = this.listOfAllUrls.get(stationName);
 		return url;

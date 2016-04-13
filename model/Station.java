@@ -10,11 +10,9 @@ import org.json.simple.JSONObject;
 public class Station
 {
     public String name;
-    ArrayList<Interval> list = new ArrayList<Interval>();
-	
 	private String stateName;
-	private String stationName;
 	private String urlName;
+    ArrayList<Interval> list = new ArrayList<Interval>();
     
     public Station(JSONArray stationData)
     //public Station(String name)
@@ -201,13 +199,12 @@ public class Station
         return day;
     }
     */
-	
 	public void setState(String name){
 		this.stateName = name;
 	}
 	
 	public void setStation(String name){
-		this.stationName = name;
+		this.name = name;
 	}
 	
 	public void setUrl(String name){
@@ -219,7 +216,7 @@ public class Station
 	}
 	
 	public String getStation(){
-		return this.stationName;
+		return this.name;
 	}
 	
 	public String getUrl(){
