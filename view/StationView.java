@@ -20,9 +20,10 @@ public class StationView extends JFrame
     NowPanel nowPanel;
     DayPanel dpToday, dpYesterday, dpDayBefore;
     StationInfoPanel sipStation;
+    MainMenu mainMenu;
     
     
-    public StationView(Station stationData)
+    public StationView(Station stationData, MainMenu mainMenu)
     {
         this.stationData = stationData;
         mainPanel = new JPanel();
@@ -105,10 +106,11 @@ class ButtonListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Refresh")) {
             //Refresh Data
+            stationView.stationData.getData();
             stationView.fillData();
         }
         if (e.getActionCommand().equals("Favourite")) {
-            System.out.println("This will add/remove to the favourites list");
+            stationView.mainMenu.addRemoveFavourite(stationView.stationData.name);
         }
     }
 }
