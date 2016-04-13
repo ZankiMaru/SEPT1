@@ -19,7 +19,7 @@ public class Model {
 		JSONArray listOfStates = (JSONArray) Extraction.getAllStates();
 		
 		/* Reduce listOfStates.size() into 1-3 for a faster startup */
-		for (int i=0; i < listOfStates.size(); i++) {
+		for (int i=0; i < 3; i++) {
 			JSONObject state = (JSONObject)listOfStates.get(i);
 			String stateName = (String) state.get("state");
 			System.out.println(stateName);
@@ -32,7 +32,7 @@ public class Model {
 				JSONObject station = (JSONObject)listOfStations.get(j);
 				String stationName = (String) station.get("city");
 				String jsonUrl = (String) station.get("url");
-
+				System.out.println(stationName);
 				Station singleStation = new Station( Extraction.getStationData(jsonUrl) );
 				
 				singleStation.setState(stateName);
@@ -97,9 +97,12 @@ public class Model {
 //	}
 	
 	public Station getStation(String stationName){
-	   for(HashMap x : listOfStates.values() ){
-	      return (Station) x.get(stationName);
-	   }
+//	   for(String x : listOfStates.keySet() ){
+//		   for(String y : listOfStates.get){
+//			   if(listOfStates.get(x).get(i))
+//		   }
+//		   System.out.println(x);
+//	   }
 	   return null;
 	}
 	

@@ -68,9 +68,11 @@ public class MainMenu extends JFrame {
 	JPanel headerPanel, browsePanel, favePanel;
 	static JPanel citiesPanel, mainPanel;
 	JScrollPane favScrollPane, browseScrollPane, cityScrollPane;
-   JLabel dateLabel;
-   
-	public MainMenu() {
+	JLabel dateLabel;
+	static Model model;
+	
+	public MainMenu(Model model) {
+		this.model = model;
 		getContentPane().setBackground(Color.MAGENTA);
 		setTitle("Weather Obs");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -289,7 +291,7 @@ public class MainMenu extends JFrame {
 	   @Override
 	   public void actionPerformed(ActionEvent arg0) {
 	      try { 
-	         Station station = Model.getStation(arg0.getActionCommand());
+	         Station station = model.getStation(arg0.getActionCommand());
 	         JFrame frame = new StationView(station);
 	         frame.setLocationRelativeTo(null);
 	         frame.setVisible(true);
