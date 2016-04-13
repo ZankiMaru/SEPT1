@@ -1,6 +1,17 @@
 1. Monitor weather of station
+-user opens application
+-selects a state
+-selects a station
+-station info displays to user
 2. Add favourite station
+-user opens application
+-selects a state
+-selects a station
+-clicks add favourite
 3. Remove favourite station
+-user opens application
+-selects a favourite
+-selects delete favourite
 4. System stores favourites for next boot up
 5. Monitor weather of multiple stations simultaneously
 6. The stations and the associated data are displayed as a table
