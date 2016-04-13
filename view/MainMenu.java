@@ -74,6 +74,7 @@ public class MainMenu extends JFrame {
 	JSplitPane statefavPanel;
 	
 	public MainMenu(Model model) {
+		/* Set up main menu data. */
 		this.model = model;
 		setTitle("Weather Obs");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -81,6 +82,7 @@ public class MainMenu extends JFrame {
 		setMinimumSize(new Dimension(400, 600));
 		this.setResizable(false);
 
+		/* Set up main menu layout */
 		GridBagLayout mainWindowGridBagLayout = new GridBagLayout();
 		mainWindowGridBagLayout.columnWidths = new int[]{0, 0};
 		mainWindowGridBagLayout.rowHeights = new int[] {50, 0};
@@ -88,11 +90,14 @@ public class MainMenu extends JFrame {
 		mainWindowGridBagLayout.rowWeights = new double[]{0.0, 0.8};
 		getContentPane().setLayout(mainWindowGridBagLayout);
 		
+		/* Set up favourite panel */
 		favePanel = new JPanel();
 		favePanel.setLayout(new BorderLayout(0, 0));
 
+		/* Populate favourite panel */
 		populateFavePanel();
 		
+		/* Set up scrollpane for favourite panel */
 		favScrollPane = new JScrollPane(favePanel);
 		favScrollPane.setMinimumSize(new Dimension(0,0));
 		GridBagConstraints gbc_favScrollPane = new GridBagConstraints();
@@ -102,9 +107,11 @@ public class MainMenu extends JFrame {
 		gbc_favScrollPane.gridy = 2;
 		favScrollPane.getVerticalScrollBar().setUnitIncrement(12);
 
+		/* Set up browsePanel */
 		browsePanel = new JPanel();
 		browsePanel.setBackground(Color.CYAN);
 		
+		/* Set up browse panel layout */
 		GridBagLayout gbl_browsePanel = new GridBagLayout();
 		gbl_browsePanel.columnWidths = new int[] {0};
 		gbl_browsePanel.rowHeights = new int[]{55, 55, 55, 55, 55, 55, 55, 55, 55, 0};
@@ -112,8 +119,10 @@ public class MainMenu extends JFrame {
 		gbl_browsePanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		browsePanel.setLayout(gbl_browsePanel);
 		
+		/* Populate browse panel */
 		populateBrowsePanel();
 		
+		/* Set up browse panel scroll bar */
 		browseScrollPane = new JScrollPane(browsePanel);
 		browseScrollPane.setMinimumSize(new Dimension(400,100));
 		GridBagConstraints gbc_browseScrollPane = new GridBagConstraints();
@@ -123,6 +132,7 @@ public class MainMenu extends JFrame {
 		gbc_browseScrollPane.gridy = 1;
 		browseScrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
+		/* Set up header Panel */
 		headerPanel = new JPanel();
 		GridBagConstraints gbc_headerPanel = new GridBagConstraints();
 		gbc_headerPanel.insets = new Insets(5, 5, 5, 4);
@@ -133,10 +143,12 @@ public class MainMenu extends JFrame {
 		headerPanel.setLayout(new BorderLayout(0, 0));
 		headerPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 
+		/* Set up date label */
 		dateLabel = new JLabel("date and clock here");
 		dateLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		headerPanel.add(dateLabel, BorderLayout.CENTER);
 						
+		/* Set up both state and favourite panel*/
 		statefavPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT,browseScrollPane,favScrollPane);
 		statefavPanel.setDividerLocation(350);
 		statefavPanel.setContinuousLayout(true);
@@ -146,6 +158,7 @@ public class MainMenu extends JFrame {
 		gbc_statefavPanel.gridx = 0;
 		gbc_statefavPanel.gridy = 1;
 		
+		/* Change the split panel divider location */
 		statefavPanel.addPropertyChangeListener("dividerLocation", new PropertyChangeListener() {
 		    @Override
 		    public void propertyChange(PropertyChangeEvent e) {
@@ -157,32 +170,36 @@ public class MainMenu extends JFrame {
 		    }
 		});
 		
+		/* Set up cities panel */
 		citiesPanel = new JPanel();
 		
+		/* Set up cities scroll panel */
 		cityScrollPane = new JScrollPane(citiesPanel);
 		cityScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		cityScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		cityScrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		
+		/* Set up main panel */
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new CardLayout());
 		mainPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		
+		/* Add cities and state panel to card layout */
 		mainPanel.add(statefavPanel, "state");
 		mainPanel.add(cityScrollPane, "city");
 		
 		
-      getContentPane().add(mainPanel, gbc_statefavPanel);
+		getContentPane().add(mainPanel, gbc_statefavPanel);
       
-      Timer timer = new Timer();
-      timer.schedule(new TimerTask() {
-        @Override
-        public void run() {
-          Date curDate = new Date();
-          SimpleDateFormat formatter = new SimpleDateFormat("EEEE K:mm a");
-          dateLabel.setText("<html><span style='font-size:12px'>" + formatter.format(curDate) + "</span></html>");
-        }
-      },0, 60000);
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				Date curDate = new Date();
+				SimpleDateFormat formatter = new SimpleDateFormat("EEEE K:mm a");
+				dateLabel.setText("<html><span style='font-size:12px'>" + formatter.format(curDate) + "</span></html>");
+			}
+		},0, 60000);
 	}
 
 	
@@ -261,6 +278,13 @@ public class MainMenu extends JFrame {
       gridLayout.setVgap(2);
       citiesPanel.setLayout(gridLayout);
    }
+   
+   public void addRemoveFavourites(String stationName){
+//	   model.addRemoveFavourites(stationName);
+	   favePanel.removeAll();
+	   favePanel.repaint();
+	   populateFavePanel();
+   }
 	
 	/* stateButtonGBC is a inner private class used to make states button 
 	 * easier to manage. */
@@ -299,6 +323,7 @@ public class MainMenu extends JFrame {
 	   public void actionPerformed(ActionEvent arg0) {
 	      try { 
 	         Station station = model.getStation(arg0.getActionCommand());
+	         station.getData();
 	         JFrame frame = new StationView(station);
 	         frame.setLocationRelativeTo(null);
 	         frame.setVisible(true);

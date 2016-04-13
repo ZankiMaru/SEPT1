@@ -29,22 +29,25 @@ public class Model {
 				JSONObject station = (JSONObject)listOfStations.get(j);
 				String stationName = (String) station.get("city");
 				String jsonUrl = (String) station.get("url");
-				Station singleStation = new Station();
+				Station singleStation = new Station(stationName, jsonUrl);
 				
 				singleStation.setState(stateName);
-				singleStation.setStation(stationName);
-				singleStation.setUrl(jsonUrl);
 				
-				this.listOfStates.get(stateName).put(stationName, singleStation);
+				newState.addStation(stationName, singleStation);
 			};
 		};
+		
+		for(String x : this.listOfStates.keySet()){
+			System.out.println("State = " + x);
+			this.listOfStates.get(x).printAllStation();
+		}
 	}
 	
-	public String getUrl(String stationName){ 
-		String url;
-		url = this.listOfAllUrls.get(stationName);
-		return url;
-	}
+//	public String getUrl(String stationName){ 
+//		String url;
+//		url = this.listOfAllUrls.get(stationName);
+//		return url;
+//	}
 	
 	public void loadFaveList(){
 		String state;
@@ -89,8 +92,11 @@ public class Model {
 	public Station getStation(String stationName){
 		Station selectedStation;
 		for(String currentState : this.listOfStates.keySet()){
-			selectedStation = this.listOfStates.get(currentState).get(stationName);
+			selectedStation = this.listOfStates.get(currentState).getStation(stationName);
 			if(selectedStation != null){
+				System.out.println("asdasd " + selectedStation.getStation());
+				System.out.println("asdasd " + selectedStation.getUrl());
+
 				return selectedStation;
 			};
 		};

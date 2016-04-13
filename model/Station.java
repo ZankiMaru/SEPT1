@@ -11,13 +11,8 @@ public class Station
 {
     public String name;
 	private String stateName;
-<<<<<<< HEAD
-	private String urlName;
+	public String urlName;
     ArrayList<Interval> list = new ArrayList<Interval>();
-=======
-	private String stationName;
-	private String urlName; 
->>>>>>> origin/master
     
     public Station(String name, String urlName)
     {
@@ -27,7 +22,9 @@ public class Station
 
     public void getData()
     {
-        JSONArray stationData = new Extraction().getStationData(urlName);
+    	System.out.println(urlName);
+    	
+        JSONArray stationData = Extraction.getStationData(urlName);
 
         /* Error handler in case if the station data is empty */
        if(stationData.size() != 0){
@@ -46,6 +43,7 @@ public class Station
              else
                 airTemp = (double) j.get("air_temp");
 
+             System.out.println(airTemp);
              /* Some station have a null as the wind speed */
              long windSpd;
              if( j.get("wind_spd_kmh") == null)
@@ -54,7 +52,10 @@ public class Station
                 windSpd = (long) j.get("wind_spd_kmh");
           
              String rainTrace = (String) j.get("rain_trace");
-
+             
+             System.out.printf("date %s | air %f | wind %d | rain %s \n", localDateTime, airTemp, windSpd, rainTrace);
+             
+             System.out.println("asdasdsa");
              Interval interval = new Interval(
                     localDateTime,
                     airTemp,
@@ -114,7 +115,6 @@ public class Station
         return day;
         
     }
-<<<<<<< HEAD
     
     /*
     public DayData getToday()
@@ -212,9 +212,7 @@ public class Station
         return day;
     }
     */
-=======
-	
->>>>>>> origin/master
+
 	public void setState(String name){
 		this.stateName = name;
 	}
