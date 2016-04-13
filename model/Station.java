@@ -16,9 +16,17 @@ public class Station
 	private String stationName;
 	private String urlName; 
     
-    public Station(JSONArray stationData)
+    public Station(String name, String urlName)
     {
-       /* Error handler in case if the station data is empty */
+       this.name = name;
+       this.urlName = urlName;
+    }
+
+    public getData()
+    {
+        JSONArray stationData = new Extration().getStationData(url);
+
+        /* Error handler in case if the station data is empty */
        if(stationData.size() != 0){
           JSONObject nameOfStation = (JSONObject) stationData.get(0);
           this.name = (String) nameOfStation.get("name");
