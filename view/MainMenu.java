@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 
 import javax.swing.JFrame;
 
@@ -29,6 +30,10 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -43,8 +48,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import model.*;
 import controller.Main;
+
 import java.awt.GridLayout;
+
+import javax.swing.ScrollPaneConstants;
 
 /* MainMenu Class is the Swing class for the main menu of the application.
  * MainMenu Class will be populated with data and informations through 
@@ -56,15 +65,14 @@ public class MainMenu extends JFrame {
 	 * favePanel is a JPanel for list of favorite stations. 
 	 * favScrollPane is a JScrollPane for scrolling through favePanel.
 	 * browseScrollPane is a JSCrollPane for scrolling through states. */
-	JPanel headerPanel;
-	JPanel browsePanel;
-	JPanel favePanel;
-	static JPanel citiesPanel;
-	static JPanel mainPanel;
-	JScrollPane favScrollPane;
-	JScrollPane browseScrollPane;
-
-	public MainMenu() {
+	JPanel headerPanel, browsePanel, favePanel;
+	static JPanel citiesPanel, mainPanel;
+	JScrollPane favScrollPane, browseScrollPane, cityScrollPane;
+	JLabel dateLabel;
+	static Model model;
+	
+	public MainMenu(Model model) {
+		this.model = model;
 		getContentPane().setBackground(Color.MAGENTA);
 		setTitle("Weather Obs");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -91,7 +99,8 @@ public class MainMenu extends JFrame {
 		gbc_favScrollPane.fill = GridBagConstraints.BOTH;
 		gbc_favScrollPane.gridx = 0;
 		gbc_favScrollPane.gridy = 2;
-		
+		favScrollPane.getVerticalScrollBar().setUnitIncrement(12);
+
 		browsePanel = new JPanel();
 		browsePanel.setBackground(Color.CYAN);
 		
@@ -111,7 +120,8 @@ public class MainMenu extends JFrame {
 		gbc_browseScrollPane.fill = GridBagConstraints.BOTH;
 		gbc_browseScrollPane.gridx = 0;
 		gbc_browseScrollPane.gridy = 1;
-		
+		browseScrollPane.getVerticalScrollBar().setUnitIncrement(16);
+
 		headerPanel = new JPanel();
 		GridBagConstraints gbc_headerPanel = new GridBagConstraints();
 		gbc_headerPanel.insets = new Insets(0, 0, 5, 0);
@@ -121,7 +131,7 @@ public class MainMenu extends JFrame {
 		getContentPane().add(headerPanel, gbc_headerPanel);
 		headerPanel.setLayout(new BorderLayout(0, 0));
 		
-		JLabel dateLabel = new JLabel("date and clock here");
+		dateLabel = new JLabel("date and clock here");
 		dateLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		headerPanel.add(dateLabel, BorderLayout.CENTER);
 						
@@ -146,12 +156,29 @@ public class MainMenu extends JFrame {
 		
 		citiesPanel = new JPanel();
 		
+		cityScrollPane = new JScrollPane(citiesPanel);
+		cityScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		cityScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		cityScrollPane.getVerticalScrollBar().setUnitIncrement(16);
+		
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new CardLayout());
 		mainPanel.add(statefavPanel, "state");
-		mainPanel.add(citiesPanel, "city");
-		citiesPanel.setLayout(new GridLayout(22, 0, 0, 0));
+		mainPanel.add(cityScrollPane, "city");
+		
+		
       getContentPane().add(mainPanel, gbc_statefavPanel);
+      
+      Timer timer = new Timer();
+      timer.schedule(new TimerTask() {
+        @Override
+        public void run() {
+          System.out.println("asd");
+          Date curDate = new Date();
+          SimpleDateFormat formatter = new SimpleDateFormat("EEEE K:mm a");
+          dateLabel.setText("<html><span style='font-size:12px'>" + formatter.format(curDate) + "</span></html>");
+        }
+      },0, 60000);
 	}
 
 	
@@ -203,6 +230,29 @@ public class MainMenu extends JFrame {
 		favePanel.add(emptyFavLabel, BorderLayout.NORTH);
 	}
 	
+	/* populateCitiesPanel is a function used to populate citiesPanel with
+	 * cityButton */
+   private static void populateCitiesPanel(JSONArray cities)
+   {
+      citiesPanel.removeAll();
+      citiesPanel.repaint();
+      JButton backButton = new JButton("Back");
+      backButton.addActionListener(new backButtonListener());
+
+      citiesPanel.add(backButton);
+      int x = 0;
+      for(int j = 0; j<cities.size(); j++){
+         JSONObject cities2 = (JSONObject) cities.get(j);
+         JButton cityButton = new JButton((String) cities2.get("city"));
+         cityButton.setPreferredSize(new Dimension(20,40));
+         cityButton.addActionListener(new cityButtonListener());
+         citiesPanel.add(cityButton);
+         x++;
+      }
+      x ++ ;
+      citiesPanel.setLayout(new GridLayout(x,1));
+   }
+	
 	/* stateButtonGBC is a inner private class used to make states button 
 	 * easier to manage. */
 	private class stateButtonGBC extends GridBagConstraints{
@@ -214,6 +264,7 @@ public class MainMenu extends JFrame {
 		}
 	}
 	
+	/* stateButtonListener is an ActionListener class for state button */
 	private class stateButtonListener implements ActionListener{
       @Override
       public void actionPerformed(ActionEvent arg0) {
@@ -225,44 +276,28 @@ public class MainMenu extends JFrame {
          cl.show(mainPanel, "city");
       }
 	}
-	
-	private static void populateCitiesPanel(JSONArray cities)
-   {
-	   citiesPanel.removeAll();
-	   citiesPanel.repaint();
-	   JButton backButton = new JButton("Back");
-	   backButton.addActionListener(new backButtonListener());
-
-      citiesPanel.add(backButton);
-      
-	   for(int j = 0; j<cities.size(); j++){
-	      JSONObject cities2 = (JSONObject) cities.get(j);
-//	      System.out.println(cities2.get("city"));
-	      JButton cityButton = new JButton((String) cities2.get("city"));
-	      cityButton.addActionListener(new cityButtonListener());
-         citiesPanel.add(cityButton);
+		
+	/* backButtonListener is an ActionListener class for back button */
+	private static class backButtonListener implements ActionListener{
+	   @Override
+      public void actionPerformed(ActionEvent arg0) {
+	      CardLayout cl = (CardLayout)(mainPanel.getLayout());
+         cl.show(mainPanel, "state");            
 	   }
-   }
-	
-	  private static class backButtonListener implements ActionListener{
-	      @Override
-	      public void actionPerformed(ActionEvent arg0) {
-            CardLayout cl = (CardLayout)(mainPanel.getLayout());
-            cl.show(mainPanel, "state");            
+	}
+   
+	/* cityButtonListener is an ActionListener class for cities button */
+	private static class cityButtonListener implements ActionListener{
+	   @Override
+	   public void actionPerformed(ActionEvent arg0) {
+	      try { 
+	         Station station = model.getStation(arg0.getActionCommand());
+	         JFrame frame = new StationView(station);
+	         frame.setLocationRelativeTo(null);
+	         frame.setVisible(true);
+	      } catch (Exception e) {
+	         e.printStackTrace();
 	      }
 	   }
-	  
-     private static class cityButtonListener implements ActionListener{
-        @Override
-        public void actionPerformed(ActionEvent arg0) {
-           try { 
-              JFrame frame = new StationView(null);
-              frame.setLocationRelativeTo(null);
-              frame.setVisible(true);
-           } catch (Exception e) {
-              e.printStackTrace();
-           }
-
-        }
-     }
+	}
 }

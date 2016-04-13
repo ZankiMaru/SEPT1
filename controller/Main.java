@@ -10,7 +10,7 @@ public class Main {
    
 	public static void main(String[] args){
 		
-		Model model = new Model();
+		final Model model = new Model();
 		model.init_data();
 		/* Checks for favorite stations */
 		
@@ -19,7 +19,7 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try { 
-					JFrame frame = new MainMenu();
+					JFrame frame = new MainMenu(model);
 					frame.setLocationRelativeTo(null);
 //	             frame.setUndecorated(true);
 					frame.setVisible(true);

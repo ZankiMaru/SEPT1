@@ -1,2 +1,3 @@
-Station stationData = new Station(new Model().getStationData("INSERT JSON LINK HERE"));
-StationView view = new StationView(stationData);
+Station station = new Station("Station Name", "Link to JSON");
+station.getData();
+StationView view = new StationView(station);
