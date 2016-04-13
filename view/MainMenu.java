@@ -40,6 +40,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JSplitPane;
 
@@ -70,16 +71,16 @@ public class MainMenu extends JFrame {
 	JScrollPane favScrollPane, browseScrollPane, cityScrollPane;
 	JLabel dateLabel;
 	static Model model;
+	JSplitPane statefavPanel;
 	
 	public MainMenu(Model model) {
 		this.model = model;
-		getContentPane().setBackground(Color.MAGENTA);
 		setTitle("Weather Obs");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 900);
 		setMinimumSize(new Dimension(400, 600));
 		this.setResizable(false);
-        
+
 		GridBagLayout mainWindowGridBagLayout = new GridBagLayout();
 		mainWindowGridBagLayout.columnWidths = new int[]{0, 0};
 		mainWindowGridBagLayout.rowHeights = new int[] {50, 0};
@@ -124,21 +125,23 @@ public class MainMenu extends JFrame {
 
 		headerPanel = new JPanel();
 		GridBagConstraints gbc_headerPanel = new GridBagConstraints();
-		gbc_headerPanel.insets = new Insets(0, 0, 5, 0);
+		gbc_headerPanel.insets = new Insets(5, 5, 5, 4);
 		gbc_headerPanel.fill = GridBagConstraints.BOTH;
 		gbc_headerPanel.gridx = 0;
 		gbc_headerPanel.gridy = 0;
 		getContentPane().add(headerPanel, gbc_headerPanel);
 		headerPanel.setLayout(new BorderLayout(0, 0));
-		
+		headerPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+
 		dateLabel = new JLabel("date and clock here");
 		dateLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		headerPanel.add(dateLabel, BorderLayout.CENTER);
 						
-		JSplitPane statefavPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT,browseScrollPane,favScrollPane);
+		statefavPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT,browseScrollPane,favScrollPane);
 		statefavPanel.setDividerLocation(350);
 		statefavPanel.setContinuousLayout(true);
 		GridBagConstraints gbc_statefavPanel = new GridBagConstraints();
+		gbc_statefavPanel.insets = new Insets(0, 5, 5, 5);
 		gbc_statefavPanel.fill = GridBagConstraints.BOTH;
 		gbc_statefavPanel.gridx = 0;
 		gbc_statefavPanel.gridy = 1;
@@ -163,6 +166,8 @@ public class MainMenu extends JFrame {
 		
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new CardLayout());
+		mainPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		
 		mainPanel.add(statefavPanel, "state");
 		mainPanel.add(cityScrollPane, "city");
 		
@@ -173,7 +178,6 @@ public class MainMenu extends JFrame {
       timer.schedule(new TimerTask() {
         @Override
         public void run() {
-          System.out.println("asd");
           Date curDate = new Date();
           SimpleDateFormat formatter = new SimpleDateFormat("EEEE K:mm a");
           dateLabel.setText("<html><span style='font-size:12px'>" + formatter.format(curDate) + "</span></html>");
@@ -236,21 +240,26 @@ public class MainMenu extends JFrame {
    {
       citiesPanel.removeAll();
       citiesPanel.repaint();
-      JButton backButton = new JButton("Back");
+      JButton backButton = new JButton("<html><font size=6>Back</font></html>");
+      backButton.setBorderPainted(false);
+      backButton.setBackground(new Color(230,230,230));
+      backButton.setOpaque(true);
       backButton.addActionListener(new backButtonListener());
 
       citiesPanel.add(backButton);
-      int x = 0;
+      int cityNum = 0;
       for(int j = 0; j<cities.size(); j++){
          JSONObject cities2 = (JSONObject) cities.get(j);
          JButton cityButton = new JButton((String) cities2.get("city"));
          cityButton.setPreferredSize(new Dimension(20,40));
          cityButton.addActionListener(new cityButtonListener());
          citiesPanel.add(cityButton);
-         x++;
+         cityNum++;
       }
-      x ++ ;
-      citiesPanel.setLayout(new GridLayout(x,1));
+      cityNum ++ ;
+      GridLayout gridLayout = new GridLayout(cityNum,1);
+      gridLayout.setVgap(2);
+      citiesPanel.setLayout(gridLayout);
    }
 	
 	/* stateButtonGBC is a inner private class used to make states button 
@@ -268,9 +277,7 @@ public class MainMenu extends JFrame {
 	private class stateButtonListener implements ActionListener{
       @Override
       public void actionPerformed(ActionEvent arg0) {
-         System.out.println(arg0.getActionCommand());
          JSONArray x = Extraction.getStateCities(arg0.getActionCommand());
-         System.out.println(x);
          populateCitiesPanel(x);
          CardLayout cl = (CardLayout)(mainPanel.getLayout());
          cl.show(mainPanel, "city");
