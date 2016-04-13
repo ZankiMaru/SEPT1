@@ -22,9 +22,9 @@ public class Station
        this.urlName = urlName;
     }
 
-    public getData()
+    public void getData()
     {
-        JSONArray stationData = new Extration().getStationData(url);
+        JSONArray stationData = new Extraction().getStationData(urlName);
 
         /* Error handler in case if the station data is empty */
        if(stationData.size() != 0){
