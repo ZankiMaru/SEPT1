@@ -1,0 +1,10 @@
+Yohanes :
+- testModelInitialisation()
+	test the model starting initialisation by counting the number of states in model
+- testStationList()
+	test the state starting initialisation by counting the number of stations in state
+- testGetStationData()
+	test the station get data feature by checking if the data is null
+- testStationButton()
+	test the station button from GUI by checking that the data is filled by clicking the button
+	

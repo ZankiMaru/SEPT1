@@ -1,4 +1,4 @@
-package model;
+package main.model;
 import java.util.*;
 
 import org.json.*;
@@ -102,6 +102,14 @@ public class Model {
 		};
 		System.out.println("Station doesn't exist.\n");
 		return null;
+	}
+	
+	public State getState(String stateName){
+		return this.listOfStates.get(stateName);
+	}
+	
+	public int countStates(){
+		return listOfStates.size();
 	}
 	
 }

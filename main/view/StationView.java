@@ -1,4 +1,4 @@
-package view;
+package main.view;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import model.Station;
+import main.model.Station;
 
 
 public class StationView extends JFrame

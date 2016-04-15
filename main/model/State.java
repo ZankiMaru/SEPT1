@@ -1,4 +1,4 @@
-package model;
+package main.model;
 
 import java.util.HashMap;
 
@@ -23,5 +23,9 @@ public class State {
 		for(String x : stations.keySet()){
 			System.out.println(x);
 		}
+	}
+	
+	public int countAllStation(){
+		return stations.size();
 	}
 }

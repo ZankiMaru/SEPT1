@@ -1,4 +1,4 @@
-package model;
+package main.model;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -235,5 +235,12 @@ public class Station
 	
 	public String getUrl(){
 		return this.urlName;
+	}
+	
+	public boolean checkData(){
+		if(list.isEmpty())
+			return false;
+		else
+			return true;
 	}
 }

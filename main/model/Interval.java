@@ -1,4 +1,4 @@
-package model;
+package main.model;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;

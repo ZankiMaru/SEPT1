@@ -1,4 +1,4 @@
-package view;
+package main.view;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -8,7 +8,7 @@ import java.text.DecimalFormat;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import model.DayData;
+import main.model.DayData;
 
 
 public class DayPanel extends JPanel

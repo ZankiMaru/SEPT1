@@ -1,4 +1,4 @@
-package view;
+package main.view;
 import java.awt.Color;
 import java.awt.GridLayout;
 
@@ -6,7 +6,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import model.Interval;
+import main.model.Interval;
 
 
 public class NowPanel extends JPanel

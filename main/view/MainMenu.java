@@ -1,12 +1,9 @@
-package view;
+package main.view;
 
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-
 import javax.swing.JFrame;
 
 import java.awt.GridBagLayout;
@@ -17,20 +14,11 @@ import java.awt.GridBagConstraints;
 
 import javax.swing.JPanel;
 
-import model.Extraction;
-
 import java.awt.Insets;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -46,12 +34,9 @@ import javax.swing.JSplitPane;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
-import model.*;
-import controller.Main;
-
+import main.model.Extraction;
+import main.model.Model;
+import main.model.Station;
 import java.awt.GridLayout;
 
 import javax.swing.ScrollPaneConstants;
@@ -72,6 +57,8 @@ public class MainMenu extends JFrame {
 	JLabel dateLabel;
 	static Model model;
 	JSplitPane statefavPanel;
+	static ArrayList<JButton> stationButtons = new ArrayList<JButton>();
+	static ArrayList<JButton> stateButtons = new ArrayList<JButton>();
 	
 	public MainMenu(Model model) {
 		/* Set up main menu data. */
@@ -240,6 +227,16 @@ public class MainMenu extends JFrame {
 		JButton westernAustraliaButton = new JButton("Western Australia");
 		GridBagConstraints gbc_westernAustraliaButton = new stateButtonGBC(0,8,browsePanel,westernAustraliaButton);
 		westernAustraliaButton.addActionListener(new stateButtonListener());
+		
+		stateButtons.add(westernAustraliaButton);
+		stateButtons.add(victoriaButton);
+		stateButtons.add(tasmaniaButton);
+		stateButtons.add(southAustraliaButton);
+		stateButtons.add(queenslandButton);
+		stateButtons.add(northernTerritoryButton);
+		stateButtons.add(newSouthWalesButton);
+		stateButtons.add(antarticaButton);
+		stateButtons.add(canberraButton);
 	}
 
 	/* populateFavePanel is a function used to populate favePanel. It checks if
@@ -257,6 +254,7 @@ public class MainMenu extends JFrame {
    {
       citiesPanel.removeAll();
       citiesPanel.repaint();
+      stationButtons.clear();
       JButton backButton = new JButton("<html><font size=6>Back</font></html>");
       backButton.setBorderPainted(false);
       backButton.setBackground(new Color(230,230,230));
@@ -271,6 +269,7 @@ public class MainMenu extends JFrame {
          cityButton.setPreferredSize(new Dimension(20,40));
          cityButton.addActionListener(new cityButtonListener());
          citiesPanel.add(cityButton);
+         stationButtons.add(cityButton);
          cityNum++;
       }
       cityNum ++ ;
@@ -331,5 +330,21 @@ public class MainMenu extends JFrame {
 	         e.printStackTrace();
 	      }
 	   }
+	}
+
+	public JButton getStateButton(String stateName){
+		for(int i = 0; i<stateButtons.size(); i++){
+			if(stateButtons.get(i).getText().equals(stateName))
+				return stateButtons.get(i);
+		}
+		return null;
+	}
+	
+	public JButton getStationButton(String stationName){
+		for(int i = 0; i<stationButtons.size(); i++){
+			if(stationButtons.get(i).getText().equals(stationName))
+				return stationButtons.get(i);
+		}
+		return null;
 	}
 }
