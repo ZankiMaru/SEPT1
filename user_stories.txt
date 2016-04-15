@@ -13,7 +13,13 @@
 -selects a favourite
 -selects delete favourite
 4. System stores favourites for next boot up
+-user selects favourite weather station
+-system stores favourite list
+-system restarts with favourites saved
 5. Monitor weather of multiple stations simultaneously
+-user selects whitch station they want to view
+-program opens individual station info in new window
 6. The stations and the associated data are displayed as a table
 7. Refresh weather table
- 
+-user opens desired station
+-user clicks refresh button to update the data
