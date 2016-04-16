@@ -12,6 +12,8 @@ import java.io.IOException;
 public class Model {
 	private HashMap<String, State> listOfStates = new HashMap<String, State>();
 	private ArrayList<String> faves = new ArrayList<String>();
+	public int xPosition;
+	public int yPosition;
 	
 	public void init_data(){
 		JSONArray listOfStates = (JSONArray) Extraction.getAllStates();
@@ -43,7 +45,7 @@ public class Model {
 
 	public void init_faveList(String favourites){
 		String line;
-		BufferedReader br = new BufferedReader(new FileReader(favourites))
+		BufferedReader br = new BufferedReader(new FileReader(favourites));
 		while((line = br.readLine()) != null){
 			this.faves.add(line);
 		};
@@ -92,6 +94,29 @@ public class Model {
 	
 	public int countStates(){
 		return listOfStates.size();
+	}
+	
+	public void setCoordinates(int x, int y){
+		this.xPosition = x;
+		this.yPosition = y;
+	}
+	
+	public void init_coordinates(String coordinates){
+		String x;
+		String y;
+		BufferedReader br = new BufferedReader(new FileReader(coordinates));
+		x = br.readLine();
+		y = br.readLine();
+		this.xPosition = Integer.parseInt(x);
+		this.xPosition = Integer.parseInt(y);
+	}
+	
+	public void saveCoordinates(String coordinates){
+		FileWriter fw = new FileWriter(coordinates, true);
+		fw.write(xPosition+"\n");
+		fw.write(yPosition);
+		fw.flush();
+		fw.close();
 	}
 	
 }

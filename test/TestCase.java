@@ -59,7 +59,6 @@ public class TestCase {
 	
 	@Test
 	public void testFavesIO(){
-		Model model = new Model();
 		model.addFave("Station x");
 		model.saveFaveList("testFavourites.txt");
 		
