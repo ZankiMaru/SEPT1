@@ -69,4 +69,23 @@ public class TestCase {
 			Assert.assertEquals("Station x", line);
 		};
 	}
+
+	@Test
+	public void testNowPanelFillsData()
+	{
+		Interval i = new Interval("20160416193000", 15.1, 11, "0.0");
+		NowPanel np = new NowPanel(i);
+
+		Assert.assertEquals(np.lblTemp.getText(), "15.1 °C");
+	}
+
+	@Test
+	public void testDayDataFormatting()
+	{
+		DayData d = new DayData();
+		d.min = 10;
+		d.max = 20;
+		String str = d.getMinMax();
+		Assert.assertEquals(str, "10/20 °C");
+	}
 }

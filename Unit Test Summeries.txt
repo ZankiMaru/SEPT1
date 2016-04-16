@@ -7,4 +7,10 @@ Yohanes :
 	test the station get data feature by checking if the data is null
 - testStationButton()
 	test the station button from GUI by checking that the data is filled by clicking the button
+
+Ben :
+testNowPanelFillsData()
+	tests that the NowPanel displays data
+testDayDataFormatting()
+	tests the DayData class formatting functions
 	
