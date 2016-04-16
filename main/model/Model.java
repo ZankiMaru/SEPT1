@@ -11,11 +11,9 @@ import java.io.IOException;
 
 public class Model {
 	private HashMap<String, State> listOfStates = new HashMap<String, State>();
-	private HashMap<String, String> faves = new HashMap<String, String>();
+	private ArrayList<String> faves = new ArrayList<String>();
 	
 	public void init_data(){
-//		JSONParser parser = new JSONParser();
-//		Object obj = parser.parse(new FileReader("input.json"));
 		JSONArray listOfStates = (JSONArray) Extraction.getAllStates();
 		
 		for (int i=0; i < listOfStates.size(); i++) {
@@ -42,47 +40,31 @@ public class Model {
 			this.listOfStates.get(x).printAllStation();
 		}
 	}
-	
-//	public String getUrl(String stationName){ 
-//		String url;
-//		url = this.listOfAllUrls.get(stationName);
-//		return url;
-//	}
-	
-	public void loadFaveList(){
-		String state;
-		String station;
-//		JSONParser parser = new JSONParser();
-//		Object obj = parser.parse(new FileReader("input.json"));
-		JSONArray listOfFaves = (JSONArray) Extraction.getAllStates();
-		
-		for (int i=0; i < listOfFaves.size(); i++){
-			JSONObject fave = (JSONObject)listOfFaves.get(i);
-			state = (String) fave.get("state");
-			station = (String) fave.get("station");
-			this.faves.put(state, station);
+
+	public void init_faveList(String favourites){
+		String line;
+		BufferedReader br = new BufferedReader(new FileReader(favourites))
+		while((line = br.readLine()) != null){
+			this.faves.add(line);
 		};
 	}
 	
-	public void addFave(Map<String, String>faveList, String cityName, String stateName){
-		faveList.put(cityName, stateName);
+	public void addFave(String stationName){
+		this.faves.add(stationName);
 	}
 	
-	public void removeFave(Map<String, String>faveList, String cityName){
-		faveList.remove(cityName);
+	public void removeFave(String stationName){
+		this.faves.remove(stationName);
 	}
 		
-//	public void saveFaveList(){
-//		JSONObject obj = new JSONObject(this.faves);
-//		try (FileWriter outputFile = new FileWriter("faveList.json")){
-//			file.write(obj.toJSONString());
-//		}catch{
-//			e.printStackTrace();
-//		}finally{
-//			file.flush();
-//			file.close();
-//		}
-//	}
+	public void saveFaveList(String favourites){
+		FileWriter fw = new FileWriter(favourites, true);
+		for(String stationName : this.faves){
+			fw.write(stationName+"\n");
+		};
+		fw.flush();
+		fw.close();
+	}
 	
 //	public JSONArray getStationData(){
 //      return null;

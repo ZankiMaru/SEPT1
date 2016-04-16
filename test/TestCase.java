@@ -56,4 +56,17 @@ public class TestCase {
 		Station station = model.getStation("Braidwood");
 		Assert.assertTrue(station.checkData());
 	}
+	
+	@Test
+	public void testFavesIO(){
+		Model model = new Model();
+		model.addFave("Station x");
+		model.saveFaveList("testFavourites.txt");
+		
+		String line;
+		BufferedReader br = new BufferedReader(new FileReader("testFavourites.txt"))
+		while((line = br.readLine()) != null){
+			Assert.assertEquals("Station x", line);
+		};
+	}
 }

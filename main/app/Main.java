@@ -8,11 +8,11 @@ import main.view.MainMenu;
 
 public class Main {
 	public static void main(String[] args){
+		String favouritesFile = "favourites.txt";
 		final Model model = new Model();
 		model.init_data();
 		/* Checks for favorite stations */
-		
-		
+		model.init_faveList(favouritesFile);
 		/* Load main menu frame */
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
