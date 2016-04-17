@@ -103,6 +103,6 @@ public class TestCase {
 		d.min = 10;
 		d.max = 20;
 		String str = d.getMinMax();
-		Assert.assertEquals(str, "10/20 °C");
+		Assert.assertEquals(str, "10.0/20.0 °C");
 	}
 }
