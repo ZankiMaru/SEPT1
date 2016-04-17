@@ -14,7 +14,8 @@ public class NowPanel extends JPanel
     
     Interval interval;
     JPanel mainPanel, statsPanel;
-    JLabel lblDayLabel, lblMinMax, lblWind, lblRain;
+    JLabel lblDayLabel, lblWind, lblRain;
+    public JLabel lblMinMax;
     
     public NowPanel(Interval interval)
     {

@@ -6,7 +6,7 @@ import java.util.Calendar;
 
 public class DayData
 {
-    double min, max, wind, rain;
+    public double min, max, wind, rain;
     
     public String strMin()
     {return Double.toString(min);}

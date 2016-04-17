@@ -5,16 +5,25 @@ import org.json.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
+import java.awt.Point;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 
 public class Model {
 	private HashMap<String, State> listOfStates = new HashMap<String, State>();
 	private ArrayList<String> faves = new ArrayList<String>();
 	public int xPosition;
 	public int yPosition;
-	
+   String favouritesFile = "favourites.txt";
+   String coordinateFile = "coordinates.txt";
+
 	public void init_data(){
 		JSONArray listOfStates = (JSONArray) Extraction.getAllStates();
 		
@@ -36,19 +45,24 @@ public class Model {
 				newState.addStation(stationName, singleStation);
 			};
 		};
-		
-		for(String x : this.listOfStates.keySet()){
-			System.out.println("State = " + x);
-			this.listOfStates.get(x).printAllStation();
-		}
-	}
+			}
 
-	public void init_faveList(String favourites){
+	public void init_faveList(){
 		String line;
-		BufferedReader br = new BufferedReader(new FileReader(favourites));
-		while((line = br.readLine()) != null){
-			this.faves.add(line);
-		};
+		BufferedReader br;
+      try
+      {
+         br = new BufferedReader(new FileReader(favouritesFile));
+         while((line = br.readLine()) != null){
+            this.faves.add(line);
+         };
+      }
+      catch (FileNotFoundException e) {
+         e.printStackTrace();
+      }
+      catch (IOException e) {
+         e.printStackTrace();
+      }
 	}
 	
 	public void addFave(String stationName){
@@ -60,12 +74,21 @@ public class Model {
 	}
 		
 	public void saveFaveList(String favourites){
-		FileWriter fw = new FileWriter(favourites, true);
-		for(String stationName : this.faves){
-			fw.write(stationName+"\n");
-		};
-		fw.flush();
-		fw.close();
+		FileWriter fw;
+      try {
+         
+         fw = new FileWriter(favouritesFile, true);
+         for(String stationName : this.faves){
+            fw.write(stationName+"\n");
+         };
+         fw.flush();
+         fw.close();
+      }
+      catch (IOException e)
+      {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      }
 	}
 	
 //	public JSONArray getStationData(){
@@ -78,9 +101,6 @@ public class Model {
 		for(String currentState : this.listOfStates.keySet()){
 			selectedStation = this.listOfStates.get(currentState).getStation(stationName);
 			if(selectedStation != null){
-				System.out.println("asdasd " + selectedStation.getStation());
-				System.out.println("asdasd " + selectedStation.getUrl());
-
 				return selectedStation;
 			};
 		};
@@ -95,28 +115,74 @@ public class Model {
 	public int countStates(){
 		return listOfStates.size();
 	}
-	
-	public void setCoordinates(int x, int y){
-		this.xPosition = x;
-		this.yPosition = y;
-	}
-	
-	public void init_coordinates(String coordinates){
+		
+	public void init_coordinates(){
 		String x;
 		String y;
-		BufferedReader br = new BufferedReader(new FileReader(coordinates));
-		x = br.readLine();
-		y = br.readLine();
-		this.xPosition = Integer.parseInt(x);
-		this.xPosition = Integer.parseInt(y);
+		BufferedReader br;
+		
+		if(!new File(coordinateFile).exists()){
+		   try {
+            PrintWriter writer = new PrintWriter(coordinateFile, "UTF-8");
+            writer.close();
+         }
+         catch (FileNotFoundException e) {
+            e.printStackTrace();
+         }
+         catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+         }
+		}
+		
+      try {
+         br = new BufferedReader(new FileReader(coordinateFile));
+         x = br.readLine();
+         y = br.readLine();
+         if(x != null && y != null) {
+            this.xPosition = Integer.parseInt(x);
+            this.yPosition = Integer.parseInt(y);
+         }
+      }
+      catch (FileNotFoundException e) {
+         e.printStackTrace();
+      }
+      catch (IOException e) {
+         e.printStackTrace();
+      }
 	}
 	
-	public void saveCoordinates(String coordinates){
-		FileWriter fw = new FileWriter(coordinates, true);
-		fw.write(xPosition+"\n");
-		fw.write(yPosition);
-		fw.flush();
-		fw.close();
+	public void saveCoordinates(int x, int y){
+		FileWriter fw;
+      try {
+         clearFile(coordinateFile);
+         fw = new FileWriter(coordinateFile, true);
+         System.out.println(x+"\n"+y);
+         fw.write(x+"\n"+y);
+         fw.close();
+      }
+      catch (IOException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      }
 	}
 	
+	public void clearFile(String path){
+	   PrintWriter writer;
+      try
+      {
+         writer = new PrintWriter(path);
+         writer.print("");
+         writer.close();
+      }
+      catch (FileNotFoundException e)
+      {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      }
+	}
+	
+	public Point getCoordinate(){	   
+	   Point loc = new Point(xPosition, yPosition);
+	   return loc;
+	}
 }

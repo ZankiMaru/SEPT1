@@ -3,6 +3,10 @@ package test;
 import static org.junit.Assert.*;
 
 import java.awt.EventQueue;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -11,10 +15,13 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import main.model.DayData;
+import main.model.Interval;
 import main.model.Model;
 import main.model.State;
 import main.model.Station;
 import main.view.MainMenu;
+import main.view.NowPanel;
 
 public class TestCase {
 	private Model model;
@@ -63,10 +70,21 @@ public class TestCase {
 		model.saveFaveList("testFavourites.txt");
 		
 		String line;
-		BufferedReader br = new BufferedReader(new FileReader("testFavourites.txt"))
-		while((line = br.readLine()) != null){
-			Assert.assertEquals("Station x", line);
-		};
+		BufferedReader br;
+      try
+      {
+         br = new BufferedReader(new FileReader("testFavourites.txt"));
+         while((line = br.readLine()) != null){
+            Assert.assertEquals("Station x", line);
+         };
+
+      }
+      catch (FileNotFoundException e) {
+         e.printStackTrace();
+      }
+      catch (IOException e) {
+         e.printStackTrace();
+      }
 	}
 
 	@Test
@@ -75,7 +93,7 @@ public class TestCase {
 		Interval i = new Interval("20160416193000", 15.1, 11, "0.0");
 		NowPanel np = new NowPanel(i);
 
-		Assert.assertEquals(np.lblTemp.getText(), "15.1 °C");
+		Assert.assertEquals(np.lblMinMax.getText(), "15.1 °C");
 	}
 
 	@Test

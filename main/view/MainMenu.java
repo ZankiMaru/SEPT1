@@ -4,6 +4,8 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Point;
+
 import javax.swing.JFrame;
 
 import java.awt.GridBagLayout;
@@ -34,9 +36,11 @@ import javax.swing.JSplitPane;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
 import main.model.Extraction;
 import main.model.Model;
 import main.model.Station;
+
 import java.awt.GridLayout;
 
 import javax.swing.ScrollPaneConstants;
@@ -56,19 +60,21 @@ public class MainMenu extends JFrame {
 	JScrollPane favScrollPane, browseScrollPane, cityScrollPane;
 	JLabel dateLabel;
 	static Model model;
+	static JFrame mainMenu;
 	JSplitPane statefavPanel;
 	static ArrayList<JButton> stationButtons = new ArrayList<JButton>();
 	static ArrayList<JButton> stateButtons = new ArrayList<JButton>();
 	
-	public MainMenu(Model model) {
+	public MainMenu(final Model model) {
 		/* Set up main menu data. */
 		this.model = model;
+		this.mainMenu = this;
+		
 		setTitle("Weather Obs");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 600, 900);
-		setMinimumSize(new Dimension(400, 600));
+		setMinimumSize(new Dimension(600, 900));
 		this.setResizable(false);
-
+		
 		/* Set up main menu layout */
 		GridBagLayout mainWindowGridBagLayout = new GridBagLayout();
 		mainWindowGridBagLayout.columnWidths = new int[]{0, 0};
@@ -187,6 +193,18 @@ public class MainMenu extends JFrame {
 				dateLabel.setText("<html><span style='font-size:12px'>" + formatter.format(curDate) + "</span></html>");
 			}
 		},0, 60000);
+		
+		addWindowListener(new java.awt.event.WindowAdapter() {
+	       @Override
+	       public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+	          Point location = mainMenu.getLocationOnScreen();
+	          int x = (int) location.getX();
+	          int y = (int) location.getY();
+	          System.out.println(x + "," + y);
+	          model.saveCoordinates(x,y);
+	       }
+	   });
+
 	}
 
 	
@@ -324,7 +342,7 @@ public class MainMenu extends JFrame {
 	         Station station = model.getStation(arg0.getActionCommand());
 	         station.getData();
 	         JFrame frame = new StationView(station);
-	         frame.setLocationRelativeTo(null);
+	         frame.setLocationRelativeTo(mainMenu);
 	         frame.setVisible(true);
 	      } catch (Exception e) {
 	         e.printStackTrace();
