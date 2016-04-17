@@ -18,7 +18,6 @@ public class DayPanel extends JPanel
     JLabel lblDayLabel, lblMinMax, lblWind, lblRain;
     
     public DayPanel(String label, DayData day)
-    //public DayPanel(String label)
     {
         GridLayout mainLayout = new GridLayout(3, 1);
         GridLayout statsLayout = new GridLayout(2, 3, 25, 5);
@@ -33,7 +32,6 @@ public class DayPanel extends JPanel
         
         this.day = day;
         fillPanel();
-        //fillDumbyData();
         
         statsPanel.add(new JLabel("Min/Max °C:"));
         statsPanel.add(new JLabel("Wind:"));
@@ -50,8 +48,6 @@ public class DayPanel extends JPanel
         
         this.add(mainPanel);
 
-        
-        
     }
     
     public void fillPanel()
@@ -60,13 +56,5 @@ public class DayPanel extends JPanel
         lblWind = new JLabel(day.getWind());
         lblRain = new JLabel(day.getRain());
     }
-    
-    public void fillDumbyData()
-    {
-        lblMinMax = new JLabel("10/24 °C");
-        lblWind = new JLabel("30kmph");
-        lblRain = new JLabel("2mm");
-    }
-    
     
 }

@@ -71,7 +71,12 @@ public class Station
     //String timeString, String temp, String wind, String rain
     public Interval getNow()
     {
-       return list.get(0);
+        try {
+            return list.get(0);
+        } catch ()  {
+            return new Interval(Calendar.getInstance(), 0, 0, "0");
+        }
+        
     }
     
     
@@ -96,38 +101,8 @@ public class Station
             if (date.get(Calendar.DAY_OF_MONTH) == i.date.get(Calendar.DAY_OF_MONTH))
                 todayList.add(i);
         
-        day.min = todayList.get(0).temp;
-        day.max = todayList.get(0).temp;
-        day.wind = todayList.get(0).wind;
-        day.rain = todayList.get(0).rain;
-        
-        for (Interval i : todayList)
-        {
-            if (i.temp < day.min)
-                day.min = i.temp;
-            if (i.temp > day.max)
-                day.max = i.temp;
-            day.wind += i.wind;
-        }
-        day.wind /= todayList.size();
-        day.rain = todayList.get(0).rain;
-        
-        return day;
-        
-    }
-    
-    /*
-    public DayData getToday()
-    {
-        Calendar date = Calendar.getInstance();
-        DayData day = new DayData();
-        
-        ArrayList<Interval> todayList = new ArrayList<Interval>();
-        
-        //Find all of todays instances
-        for (Interval i : list)
-            if (date.DAY_OF_YEAR == i.date.DAY_OF_YEAR)
-                todayList.add(i);
+        if (todayList.size() == 0)
+            return new DayData(0, 0, 0, 0);
         
         day.min = todayList.get(0).temp;
         day.max = todayList.get(0).temp;
@@ -145,73 +120,14 @@ public class Station
         day.wind /= todayList.size();
         day.rain = todayList.get(0).rain;
         
-        return day;
-    }
-    
-    public DayData getYesterday()
-    {
-        Calendar date = Calendar.getInstance();
-        date.add(Calendar.DAY_OF_YEAR, -1);
-        DayData day = new DayData();
-        
-        ArrayList<Interval> todayList = new ArrayList<Interval>();
-        
-        //Find all of todays instances
-        
-        for (Interval i : list)
-            if (date.DAY_OF_YEAR == i.date.DAY_OF_YEAR)
-                todayList.add(i);
-        
-        day.min = todayList.get(0).temp;
-        day.max = todayList.get(0).temp;
-        day.wind = todayList.get(0).wind;
-        day.rain = todayList.get(0).rain;
-        
-        for (Interval i : todayList)
-        {
-            if (i.temp < day.min)
-                day.min = i.temp;
-            if (i.temp > day.max)
-                day.max = i.temp;
-            day.wind += i.wind;
+        if (day.isNotNull())
+            return day;
+        } catch () {
+            new DayData(0, 0, 0, 0);
         }
-        day.wind /= todayList.size();
-        day.rain = todayList.get(0).rain;
         
-        return day;
+        
     }
-    
-    public DayData getDayBefore()
-    {
-        Calendar date = Calendar.getInstance();
-        DayData day = new DayData();
-        
-        ArrayList<Interval> todayList = new ArrayList<Interval>();
-        
-        //Find all of todays instances
-        for (Interval i : list)
-            if (date.DAY_OF_YEAR - 2 == i.date.DAY_OF_YEAR)
-                todayList.add(i);
-        
-        day.min = todayList.get(0).temp;
-        day.max = todayList.get(0).temp;
-        day.wind = todayList.get(0).wind;
-        day.rain = todayList.get(0).rain;
-        
-        for (Interval i : todayList)
-        {
-            if (i.temp < day.min)
-                day.min = i.temp;
-            if (i.temp > day.max)
-                day.max = i.temp;
-            day.wind += i.wind;
-        }
-        day.wind /= todayList.size();
-        day.rain = todayList.get(0).rain;
-        
-        return day;
-    }
-    */
 
 	public void setState(String name){
 		this.stateName = name;

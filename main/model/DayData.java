@@ -8,6 +8,18 @@ public class DayData
 {
     public double min, max, wind, rain;
     
+    public DayData()
+    {
+        
+    }
+    public DayData(double min, double max, double wind, double rain)
+    {
+        this.min = min;
+        this.max = max;
+        this.wind = wind;
+        this.rain = rain;
+    }
+    
     public String strMin()
     {return Double.toString(min);}
     
@@ -31,5 +43,13 @@ public class DayData
     public String getRain()
     {
         return strRain() + "mm";
+    }
+    
+    public boolean isNotNull()
+    {
+        if (min != null && max != null && wind != null && rain != null)
+            return true;
+        else
+            return false;
     }
 }
