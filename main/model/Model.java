@@ -68,15 +68,33 @@ public class Model {
 	public void addFave(String stationName){
 		this.faves.add(stationName);
 	}
-	
-	public void removeFave(String stationName){
-		this.faves.remove(stationName);
+		
+	public void addRemoveFavourites(String stationName){
+	   boolean found = false;
+	   int stationIndex = 0;
+	   
+	   System.out.println("save fav - " + stationName);
+	   String station = stationName.replaceAll("\\p{P}", "");
+	   System.out.println("save fav trimmed - " + station);
+	   
+	   for(int i = 0 ; i < faves.size(); i++){
+	      if(station.equalsIgnoreCase(faves.get(i))){
+	         found = true;
+	         stationIndex = i;
+	      }
+	   }
+	   if(found){
+	      faves.remove(stationIndex);
+	   }
+	   else{
+	      addFave(station);
+	   }
 	}
 		
-	public void saveFaveList(String favourites){
+	public void saveFaveList(){
 		FileWriter fw;
+		clearFile(favouritesFile);
       try {
-         
          fw = new FileWriter(favouritesFile, true);
          for(String stationName : this.faves){
             fw.write(stationName+"\n");
@@ -96,9 +114,23 @@ public class Model {
 //		return Extraction.getStationData();
 //	}
 	
+	public ArrayList<Station> getAllFave(){
+	   ArrayList<Station> favourites = new ArrayList<Station>();
+	   for(int i = 0; i<faves.size(); i++){
+//	      System.out.println(faves.get(i));
+	      favourites.add(getStation(faves.get(i)));
+	   }
+	   return favourites;
+	}
+	
 	public Station getStation(String stationName){
 		Station selectedStation;
 		for(String currentState : this.listOfStates.keySet()){
+		   System.out.println("searchin");
+		   System.out.println(stationName);
+         System.out.println("====================");
+
+		   
 			selectedStation = this.listOfStates.get(currentState).getStation(stationName);
 			if(selectedStation != null){
 				return selectedStation;

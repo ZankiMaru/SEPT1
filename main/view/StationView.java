@@ -20,10 +20,11 @@ public class StationView extends JFrame
     NowPanel nowPanel;
     DayPanel dpToday, dpYesterday, dpDayBefore;
     StationInfoPanel sipStation;
+    MainMenu mainMenu;
     
-    
-    public StationView(Station stationData)
+    public StationView(Station stationData, MainMenu mainMenu)
     {
+        this.mainMenu = mainMenu;
         this.stationData = stationData;
         mainPanel = new JPanel();
         
@@ -57,6 +58,11 @@ public class StationView extends JFrame
         dpToday = new DayPanel("Today", stationData.getDay("today"));
         dpYesterday = new DayPanel("Yesterday", stationData.getDay("yesterday"));
         dpDayBefore = new DayPanel("Day Before", stationData.getDay("dayBefore"));
+    }
+    
+    public void addRemoveFavourites(){
+       System.out.println("station view " + stationData.getStation());
+       mainMenu.addRemoveFavourites(stationData.getStation());
     }
 }
 
@@ -108,7 +114,8 @@ class ButtonListener implements ActionListener {
             stationView.fillData();
         }
         if (e.getActionCommand().equals("Favourite")) {
-            System.out.println("This will add/remove to the favourites list");
+           //Add or Remove Favourites
+           stationView.addRemoveFavourites();
         }
     }
 }

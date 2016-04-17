@@ -27,6 +27,7 @@ import java.util.TimerTask;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -60,15 +61,15 @@ public class MainMenu extends JFrame {
 	JScrollPane favScrollPane, browseScrollPane, cityScrollPane;
 	JLabel dateLabel;
 	static Model model;
-	static JFrame mainMenu;
+	static MainMenu mainMenu;
 	JSplitPane statefavPanel;
 	static ArrayList<JButton> stationButtons = new ArrayList<JButton>();
 	static ArrayList<JButton> stateButtons = new ArrayList<JButton>();
 	
-	public MainMenu(final Model model) {
+	public MainMenu(Model model) {
 		/* Set up main menu data. */
-		this.model = model;
-		this.mainMenu = this;
+		MainMenu.model = model;
+		mainMenu = this;
 		
 		setTitle("Weather Obs");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -85,7 +86,6 @@ public class MainMenu extends JFrame {
 		
 		/* Set up favourite panel */
 		favePanel = new JPanel();
-		favePanel.setLayout(new BorderLayout(0, 0));
 
 		/* Populate favourite panel */
 		populateFavePanel();
@@ -194,16 +194,7 @@ public class MainMenu extends JFrame {
 			}
 		},0, 60000);
 		
-		addWindowListener(new java.awt.event.WindowAdapter() {
-	       @Override
-	       public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-	          Point location = mainMenu.getLocationOnScreen();
-	          int x = (int) location.getX();
-	          int y = (int) location.getY();
-	          System.out.println(x + "," + y);
-	          model.saveCoordinates(x,y);
-	       }
-	   });
+		addWindowListener(new exitAdapter());
 
 	}
 
@@ -261,9 +252,33 @@ public class MainMenu extends JFrame {
 	 * user have a favourited stations. If yes, it will populate it. If not, it
 	 * will print a label saying to add the user's favourite station. */
 	private void populateFavePanel() {
-		JLabel emptyFavLabel = new JLabel("Please add your favourite stations");
-		emptyFavLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		favePanel.add(emptyFavLabel, BorderLayout.NORTH);
+	  
+	   int faveNum = 0;
+	   ArrayList<Station> faves = model.getAllFave();
+
+	   if(faves.isEmpty()) {
+	      JLabel emptyFavLabel = new JLabel("Please add your favourite stations");
+	      emptyFavLabel.setHorizontalAlignment(SwingConstants.CENTER);
+	      favePanel.setLayout(new BorderLayout());
+	      favePanel.add(emptyFavLabel, BorderLayout.NORTH);
+	   }	
+	   else{
+	      for(int i = 0; i<faves.size(); i++){
+	         JButton cityButton = new JButton(faves.get(i).getStation().replaceAll("\\p{P}", ""));
+	         cityButton.setPreferredSize(new Dimension(20,40));
+	         cityButton.addActionListener(new cityButtonListener());
+	         favePanel.add(cityButton);
+	         faveNum++;
+	      }
+	      GridLayout gridLayout;
+	      if(faveNum < 5)
+	         gridLayout = new GridLayout(5,1);
+	      else
+	         gridLayout = new GridLayout(faveNum,1);
+
+	      gridLayout.setVgap(2);
+	      favePanel.setLayout(gridLayout);
+	   }
 	}
 	
 	/* populateCitiesPanel is a function used to populate citiesPanel with
@@ -297,7 +312,8 @@ public class MainMenu extends JFrame {
    }
    
    public void addRemoveFavourites(String stationName){
-//	   model.addRemoveFavourites(stationName);
+      System.out.println("window fave " + stationName);
+      model.addRemoveFavourites(stationName);
 	   favePanel.removeAll();
 	   favePanel.repaint();
 	   populateFavePanel();
@@ -341,7 +357,7 @@ public class MainMenu extends JFrame {
 	      try { 
 	         Station station = model.getStation(arg0.getActionCommand());
 	         station.getData();
-	         JFrame frame = new StationView(station);
+	         JFrame frame = new StationView(station, mainMenu);
 	         frame.setLocationRelativeTo(mainMenu);
 	         frame.setVisible(true);
 	      } catch (Exception e) {
@@ -365,4 +381,18 @@ public class MainMenu extends JFrame {
 		}
 		return null;
 	}
+
+	private class exitAdapter extends WindowAdapter{
+      @Override
+      public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+         Point location = mainMenu.getLocationOnScreen();
+         int x = (int) location.getX();
+         int y = (int) location.getY();
+         model.saveCoordinates(x,y);
+         model.saveFaveList();
+      }
+
+	}
+	
+	
 }

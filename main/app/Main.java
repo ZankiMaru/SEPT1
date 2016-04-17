@@ -26,8 +26,5 @@ public class Main {
 				}
 			}
 		});	
-		/*Save data*/
-		model.saveFaveList(null);
-//		model.saveCoordinates(coordinateFile);
 	}
 }

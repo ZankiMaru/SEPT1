@@ -66,18 +66,21 @@ public class TestCase {
 	
 	@Test
 	public void testFavesIO(){
-		model.addFave("Station x");
-		model.saveFaveList("testFavourites.txt");
+		model.addRemoveFavourites("Bunbury");
+		model.saveFaveList();
 		
 		String line;
 		BufferedReader br;
+		
+		boolean found = false;
       try
       {
-         br = new BufferedReader(new FileReader("testFavourites.txt"));
+         br = new BufferedReader(new FileReader("favorites.txt"));
          while((line = br.readLine()) != null){
-            Assert.assertEquals("Station x", line);
+            if(line.equalsIgnoreCase("Bunbury"))
+               found = true;
          };
-
+         Assert.assertEquals(true, found);
       }
       catch (FileNotFoundException e) {
          e.printStackTrace();
@@ -100,8 +103,8 @@ public class TestCase {
 	public void testDayDataFormatting()
 	{
 		DayData d = new DayData();
-		d.min = 10;
-		d.max = 20;
+		d.min = (double) 10;
+		d.max = (double) 20;
 		String str = d.getMinMax();
 		Assert.assertEquals(str, "10.0/20.0 °C");
 	}

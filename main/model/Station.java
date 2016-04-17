@@ -1,4 +1,5 @@
 package main.model;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,16 +22,13 @@ public class Station
     }
 
     public void getData()
-    {
-    	System.out.println(urlName);
-    	
+    {    	
         JSONArray stationData = Extraction.getStationData(urlName);
 
         /* Error handler in case if the station data is empty */
        if(stationData.size() != 0){
           JSONObject nameOfStation = (JSONObject) stationData.get(0);
           this.name = (String) nameOfStation.get("name");
-          System.out.println(this.name);
           for(int i = 0; i < stationData.size(); i++){
              JSONObject j = (JSONObject) stationData.get(i);
             
@@ -43,7 +41,6 @@ public class Station
              else
                 airTemp = (double) j.get("air_temp");
 
-             System.out.println(airTemp);
              /* Some station have a null as the wind speed */
              long windSpd;
              if( j.get("wind_spd_kmh") == null)
@@ -52,10 +49,6 @@ public class Station
                 windSpd = (long) j.get("wind_spd_kmh");
           
              String rainTrace = (String) j.get("rain_trace");
-             
-             System.out.printf("date %s | air %f | wind %d | rain %s \n", localDateTime, airTemp, windSpd, rainTrace);
-             
-             System.out.println("asdasdsa");
              Interval interval = new Interval(
                     localDateTime,
                     airTemp,
@@ -71,12 +64,12 @@ public class Station
     //String timeString, String temp, String wind, String rain
     public Interval getNow()
     {
-        try {
-            return list.get(0);
-        } catch ()  {
-            return new Interval(Calendar.getInstance(), 0, 0, "0");
-        }
-        
+       if(list.size() == 0) {
+          SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhhmm00");
+          return new Interval(format.format(new Date()), 0, 0, "0");
+       }
+       else
+            return list.get(0);        
     }
     
     
@@ -122,11 +115,9 @@ public class Station
         
         if (day.isNotNull())
             return day;
-        } catch () {
-            new DayData(0, 0, 0, 0);
-        }
-        
-        
+        else {
+            return new DayData(0, 0, 0, 0);
+        } 
     }
 
 	public void setState(String name){
