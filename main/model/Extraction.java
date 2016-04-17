@@ -17,19 +17,6 @@ import org.json.simple.parser.JSONParser;
  * Extraction class will be able to return values from the website's JSON into
  * Model class for the application to use. */
 public class Extraction {
-
-	/* The function used to debug the Extraction class easier. */
-//   public static void main(String[] args){
-      
-//      String site;
-//      printAllStations();
-//        JSONArray x = getAllStateCities("victoria");
-//      site = findSiteUrl("Melbourne Olympic Park");
-//      getStationData(site);
-//      System.out.println(site);
-//      printSiteWeather(site);
-//      getAllStates();
-//   }
    
 	/* printSiteWeather function is the example of how to extract the weather
 	 * of a site using an url as a string. */

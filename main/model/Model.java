@@ -1,11 +1,8 @@
 package main.model;
 import java.util.*;
 
-import org.json.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-
 import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.File;
@@ -24,6 +21,7 @@ public class Model {
    String favouritesFile = "favourites.txt";
    String coordinateFile = "coordinates.txt";
 
+   /* init_data function is called to initialise the model's data. */
 	public void init_data(){
 		JSONArray listOfStates = (JSONArray) Extraction.getAllStates();
 		
@@ -41,17 +39,32 @@ public class Model {
 				Station singleStation = new Station(stationName, jsonUrl);
 				
 				singleStation.setState(stateName);
-				
 				newState.addStation(stationName, singleStation);
 			};
 		};
-			}
+	}
 
+	/* init_faveList function is used to initialise the model's favourites.
+	 * It first check if there is favourites.txt, if not, create a new one.
+	 * If yes, it will clear the content and fill with favourites station. */
 	public void init_faveList(){
 		String line;
 		BufferedReader br;
-      try
-      {
+		
+		if(!new File(favouritesFile).exists()){
+	         try {
+	            PrintWriter writer = new PrintWriter(favouritesFile, "UTF-8");
+	            writer.close();
+	         }
+	         catch (FileNotFoundException e) {
+	            e.printStackTrace();
+	         }
+	         catch (UnsupportedEncodingException e) {
+	            e.printStackTrace();
+	         }
+		}
+		
+		try {
          br = new BufferedReader(new FileReader(favouritesFile));
          while((line = br.readLine()) != null){
             this.faves.add(line);
@@ -65,32 +78,30 @@ public class Model {
       }
 	}
 	
+	/* addFave function used to add station to fave list. */
 	public void addFave(String stationName){
 		this.faves.add(stationName);
 	}
 		
+	/* addRemoveFavourites checks for existing station in fave list. If there
+	 * is, it will remove the station. Otherwise, it will add the station. */
 	public void addRemoveFavourites(String stationName){
 	   boolean found = false;
 	   int stationIndex = 0;
-	   
-	   System.out.println("save fav - " + stationName);
 	   String station = stationName.replaceAll("\\p{P}", "");
-	   System.out.println("save fav trimmed - " + station);
-	   
 	   for(int i = 0 ; i < faves.size(); i++){
 	      if(station.equalsIgnoreCase(faves.get(i))){
 	         found = true;
 	         stationIndex = i;
 	      }
 	   }
-	   if(found){
+	   if(found)
 	      faves.remove(stationIndex);
-	   }
-	   else{
+	   else
 	      addFave(station);
-	   }
 	}
 		
+	/* saveFaveList save the favourites from the list to text file at the end. */
 	public void saveFaveList(){
 		FileWriter fw;
 		clearFile(favouritesFile);
@@ -104,33 +115,23 @@ public class Model {
       }
       catch (IOException e)
       {
-         // TODO Auto-generated catch block
          e.printStackTrace();
       }
 	}
 	
-//	public JSONArray getStationData(){
-//      return null;
-//		return Extraction.getStationData();
-//	}
-	
+	/* getAllFave returns an ArrayList of stations from favourites. */
 	public ArrayList<Station> getAllFave(){
 	   ArrayList<Station> favourites = new ArrayList<Station>();
 	   for(int i = 0; i<faves.size(); i++){
-//	      System.out.println(faves.get(i));
 	      favourites.add(getStation(faves.get(i)));
 	   }
 	   return favourites;
 	}
 	
+	/* getStation search and returns Station object from station name. */
 	public Station getStation(String stationName){
 		Station selectedStation;
-		for(String currentState : this.listOfStates.keySet()){
-		   System.out.println("searchin");
-		   System.out.println(stationName);
-         System.out.println("====================");
-
-		   
+		for(String currentState : this.listOfStates.keySet()){		   
 			selectedStation = this.listOfStates.get(currentState).getStation(stationName);
 			if(selectedStation != null){
 				return selectedStation;
@@ -140,14 +141,19 @@ public class Model {
 		return null;
 	}
 	
+	/* getState returns State class from state name. */
 	public State getState(String stateName){
 		return this.listOfStates.get(stateName);
 	}
 	
+	/* countStates count the number of states. */
 	public int countStates(){
 		return listOfStates.size();
 	}
 		
+	/* init_coordinates function was initialise before opening the main window.
+	 * It will look for coordinates.txt and get the last position of the window.
+	 * If there isn't one, it will create an empty one. */
 	public void init_coordinates(){
 		String x;
 		String y;
@@ -183,36 +189,34 @@ public class Model {
       }
 	}
 	
+	/* saveCoordinates function saves the last position of the window. */
 	public void saveCoordinates(int x, int y){
 		FileWriter fw;
       try {
          clearFile(coordinateFile);
          fw = new FileWriter(coordinateFile, true);
-         System.out.println(x+"\n"+y);
          fw.write(x+"\n"+y);
          fw.close();
       }
       catch (IOException e) {
-         // TODO Auto-generated catch block
          e.printStackTrace();
       }
 	}
 	
+	/* clearFile function clear the content of a text file. */
 	public void clearFile(String path){
 	   PrintWriter writer;
-      try
-      {
+      try {
          writer = new PrintWriter(path);
          writer.print("");
          writer.close();
       }
-      catch (FileNotFoundException e)
-      {
-         // TODO Auto-generated catch block
+      catch (FileNotFoundException e) {
          e.printStackTrace();
       }
 	}
 	
+	/* getCoordinate function returns Point for window location. */
 	public Point getCoordinate(){	   
 	   Point loc = new Point(xPosition, yPosition);
 	   return loc;

@@ -61,7 +61,6 @@ public class StationView extends JFrame
     }
     
     public void addRemoveFavourites(){
-       System.out.println("station view " + stationData.getStation());
        mainMenu.addRemoveFavourites(stationData.getStation());
     }
 }

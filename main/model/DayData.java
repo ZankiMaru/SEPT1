@@ -1,7 +1,5 @@
 package main.model;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.util.Calendar;
 
 
 public class DayData

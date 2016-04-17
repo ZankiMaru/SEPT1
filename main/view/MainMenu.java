@@ -34,6 +34,7 @@ import javax.swing.SwingConstants;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JSplitPane;
+import javax.swing.SwingUtilities;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -86,9 +87,6 @@ public class MainMenu extends JFrame {
 		
 		/* Set up favourite panel */
 		favePanel = new JPanel();
-
-		/* Populate favourite panel */
-		populateFavePanel();
 		
 		/* Set up scrollpane for favourite panel */
 		favScrollPane = new JScrollPane(favePanel);
@@ -177,6 +175,9 @@ public class MainMenu extends JFrame {
 		mainPanel.setLayout(new CardLayout());
 		mainPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		
+	    /* Populate favourite panel */
+      populateFavePanel();
+      
 		/* Add cities and state panel to card layout */
 		mainPanel.add(statefavPanel, "state");
 		mainPanel.add(cityScrollPane, "city");
@@ -184,13 +185,16 @@ public class MainMenu extends JFrame {
 		
 		getContentPane().add(mainPanel, gbc_statefavPanel);
       
+		/* Add clock on top of the frame */
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
 				Date curDate = new Date();
 				SimpleDateFormat formatter = new SimpleDateFormat("EEEE K:mm a");
-				dateLabel.setText("<html><span style='font-size:12px'>" + formatter.format(curDate) + "</span></html>");
+				dateLabel.setText("<html><span style='font-size:12px'>" 
+                  				+ formatter.format(curDate) 
+                  				+ "</span></html>");
 			}
 		},0, 60000);
 		
@@ -198,43 +202,76 @@ public class MainMenu extends JFrame {
 
 	}
 
+	/* addRemoveFavourites passes the station name from stationView to model class. */
+   public void addRemoveFavourites(String stationName){
+      model.addRemoveFavourites(stationName);
+      populateFavePanel();
+   }
+	
 	
 	/* populateBrowsePanel is a function used to populate browsePanel. */
 	private void populateBrowsePanel() {
 		JButton antarticaButton = new JButton("Antarctica");
-		GridBagConstraints gbc_antarticaButton = new stateButtonGBC(0,0,browsePanel,antarticaButton);
+		GridBagConstraints gbc_antarticaButton = new stateButtonGBC(0,
+                                                      0,
+                                                      browsePanel,
+                                                      antarticaButton);
 		antarticaButton.addActionListener(new stateButtonListener());
 		
 		JButton canberraButton = new JButton("Canberra");
-		GridBagConstraints gbc_canberraButton = new stateButtonGBC(0,1,browsePanel,canberraButton);
+		GridBagConstraints gbc_canberraButton = new stateButtonGBC(0,
+                                                     1,
+                                                     browsePanel,
+                                                     canberraButton);
 		canberraButton.addActionListener(new stateButtonListener());
 
 		JButton newSouthWalesButton = new JButton("New South Wales");
-		GridBagConstraints gbc_newSouthWalesButton = new stateButtonGBC(0,2,browsePanel,newSouthWalesButton);
+		GridBagConstraints gbc_newSouthWalesButton = new stateButtonGBC(0,
+                                                       2,
+                                                       browsePanel,
+                                                       newSouthWalesButton);
 		newSouthWalesButton.addActionListener(new stateButtonListener());
 
 		JButton northernTerritoryButton = new JButton("Northern Territory");
-		GridBagConstraints gbc_northernTerritoryButton = new stateButtonGBC(0,3,browsePanel,northernTerritoryButton);
+		GridBagConstraints gbc_northernTerritoryButton = new stateButtonGBC(0,
+                                                        3,
+                                                        browsePanel,
+                                                        northernTerritoryButton);
 		northernTerritoryButton.addActionListener(new stateButtonListener());
 
 		JButton queenslandButton = new JButton("Queensland");
-		GridBagConstraints gbc_queenslandButton = new stateButtonGBC(0,4,browsePanel,queenslandButton);
+		GridBagConstraints gbc_queenslandButton = new stateButtonGBC(0,
+                                                       4,
+                                                       browsePanel,
+                                                       queenslandButton);
 		queenslandButton.addActionListener(new stateButtonListener());
 
 		JButton southAustraliaButton = new JButton("South Australia");
-		GridBagConstraints gbc_southAustraliaButton = new stateButtonGBC(0,5,browsePanel,southAustraliaButton);
+		GridBagConstraints gbc_southAustraliaButton = new stateButtonGBC(0,
+                                                        5,
+                                                        browsePanel,
+                                                        southAustraliaButton);
 		southAustraliaButton.addActionListener(new stateButtonListener());
 
 		JButton tasmaniaButton = new JButton("Tasmania");
-		GridBagConstraints gbc_tasmaniaButton = new stateButtonGBC(0,6,browsePanel,tasmaniaButton);
+		GridBagConstraints gbc_tasmaniaButton = new stateButtonGBC(0,
+                                                        6,
+                                                        browsePanel,
+                                                        tasmaniaButton);
 		tasmaniaButton.addActionListener(new stateButtonListener());
 	    
 		JButton victoriaButton = new JButton("Victoria");
-		GridBagConstraints gbc_victoriaButton = new stateButtonGBC(0,7,browsePanel,victoriaButton);
+		GridBagConstraints gbc_victoriaButton = new stateButtonGBC(0,
+                                                        7,
+                                                        browsePanel,
+                                                        victoriaButton);
 		victoriaButton.addActionListener(new stateButtonListener());
 
 		JButton westernAustraliaButton = new JButton("Western Australia");
-		GridBagConstraints gbc_westernAustraliaButton = new stateButtonGBC(0,8,browsePanel,westernAustraliaButton);
+		GridBagConstraints gbc_westernAustraliaButton = new stateButtonGBC(0,
+                                                       8,
+                                                       browsePanel,
+                                                       westernAustraliaButton);
 		westernAustraliaButton.addActionListener(new stateButtonListener());
 		
 		stateButtons.add(westernAustraliaButton);
@@ -251,8 +288,9 @@ public class MainMenu extends JFrame {
 	/* populateFavePanel is a function used to populate favePanel. It checks if
 	 * user have a favourited stations. If yes, it will populate it. If not, it
 	 * will print a label saying to add the user's favourite station. */
-	private void populateFavePanel() {
-	  
+	private void populateFavePanel() {   
+	   favePanel.removeAll();
+
 	   int faveNum = 0;
 	   ArrayList<Station> faves = model.getAllFave();
 
@@ -264,7 +302,8 @@ public class MainMenu extends JFrame {
 	   }	
 	   else{
 	      for(int i = 0; i<faves.size(); i++){
-	         JButton cityButton = new JButton(faves.get(i).getStation().replaceAll("\\p{P}", ""));
+	         JButton cityButton = 
+	               new JButton(faves.get(i).getStation().replaceAll("\\p{P}", ""));
 	         cityButton.setPreferredSize(new Dimension(20,40));
 	         cityButton.addActionListener(new cityButtonListener());
 	         favePanel.add(cityButton);
@@ -279,6 +318,8 @@ public class MainMenu extends JFrame {
 	      gridLayout.setVgap(2);
 	      favePanel.setLayout(gridLayout);
 	   }
+      favePanel.repaint();
+	   favScrollPane.revalidate();
 	}
 	
 	/* populateCitiesPanel is a function used to populate citiesPanel with
@@ -310,37 +351,7 @@ public class MainMenu extends JFrame {
       gridLayout.setVgap(2);
       citiesPanel.setLayout(gridLayout);
    }
-   
-   public void addRemoveFavourites(String stationName){
-      System.out.println("window fave " + stationName);
-      model.addRemoveFavourites(stationName);
-	   favePanel.removeAll();
-	   favePanel.repaint();
-	   populateFavePanel();
-   }
-	
-	/* stateButtonGBC is a inner private class used to make states button 
-	 * easier to manage. */
-	private class stateButtonGBC extends GridBagConstraints{
-		private stateButtonGBC(int x, int y, JPanel panel, Component button){
-			this.fill = GridBagConstraints.BOTH;
-			this.gridx = x;
-			this.gridy = y;
-			panel.add(button, this);
-		}
-	}
-	
-	/* stateButtonListener is an ActionListener class for state button */
-	private class stateButtonListener implements ActionListener{
-      @Override
-      public void actionPerformed(ActionEvent arg0) {
-         JSONArray x = Extraction.getStateCities(arg0.getActionCommand());
-         populateCitiesPanel(x);
-         CardLayout cl = (CardLayout)(mainPanel.getLayout());
-         cl.show(mainPanel, "city");
-      }
-	}
-		
+   			
 	/* backButtonListener is an ActionListener class for back button */
 	private static class backButtonListener implements ActionListener{
 	   @Override
@@ -353,19 +364,60 @@ public class MainMenu extends JFrame {
 	/* cityButtonListener is an ActionListener class for cities button */
 	private static class cityButtonListener implements ActionListener{
 	   @Override
-	   public void actionPerformed(ActionEvent arg0) {
+	   public void actionPerformed(final ActionEvent arg0) {
 	      try { 
-	         Station station = model.getStation(arg0.getActionCommand());
-	         station.getData();
-	         JFrame frame = new StationView(station, mainMenu);
-	         frame.setLocationRelativeTo(mainMenu);
-	         frame.setVisible(true);
+	         SwingUtilities.invokeLater(new Runnable() {
+	            @Override
+	            public void run() {
+	               Station station = model.getStation(arg0.getActionCommand());
+	               station.getData();
+	               JFrame frame = new StationView(station, mainMenu);
+	               frame.setLocationRelativeTo(mainMenu);
+	               frame.setVisible(true);
+	            }
+	         });
 	      } catch (Exception e) {
 	         e.printStackTrace();
 	      }
 	   }
 	}
+  
+   /* stateButtonListener is an ActionListener class for state button */
+   private class stateButtonListener implements ActionListener{
+      @Override
+      public void actionPerformed(ActionEvent arg0) {
+         JSONArray x = Extraction.getStateCities(arg0.getActionCommand());
+         populateCitiesPanel(x);
+         CardLayout cl = (CardLayout)(mainPanel.getLayout());
+         cl.show(mainPanel, "city");
+      }
+   }
+	
+	/* stateButtonGBC is a inner private class used to make states button 
+    * easier to manage. */
+   private class stateButtonGBC extends GridBagConstraints{
+      private stateButtonGBC(int x, int y, JPanel panel, Component button){
+         this.fill = GridBagConstraints.BOTH;
+         this.gridx = x;
+         this.gridy = y;
+         panel.add(button, this);
+      }
+   }
+   
+   /* getStationButton returns specific stationButton  */
+   	
+	/* getStationButton returns a stationButton with specific name */
+   public JButton getStationButton(String stationName){
+      for(int i = 0; i<stationButtons.size(); i++){
+         if(stationButtons.get(i).getText().equals(stationName))
+            return stationButtons.get(i);
+      }
+      return null;
+   }
+   
+   /* exitAdapter is a WindowAdapter that listen when the user exit */
 
+	/* getStateButton returns a stateButton with specific name */
 	public JButton getStateButton(String stateName){
 		for(int i = 0; i<stateButtons.size(); i++){
 			if(stateButtons.get(i).getText().equals(stateName))
@@ -374,14 +426,7 @@ public class MainMenu extends JFrame {
 		return null;
 	}
 	
-	public JButton getStationButton(String stationName){
-		for(int i = 0; i<stationButtons.size(); i++){
-			if(stationButtons.get(i).getText().equals(stationName))
-				return stationButtons.get(i);
-		}
-		return null;
-	}
-
+	/* exitAdapter is a WindowAdapter that listen to user exiting the program */
 	private class exitAdapter extends WindowAdapter{
       @Override
       public void windowClosing(java.awt.event.WindowEvent windowEvent) {
