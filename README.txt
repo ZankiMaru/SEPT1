@@ -1,5 +1,6 @@
-Tutor:
-Aditya Jagtap
+Tutorial Info:
+Tutor: Aditya Jagtap
+Session: 5:30pm Wednesday
 
 Group Members:
 s3494185 - Benjamin Lee 	- 25%
