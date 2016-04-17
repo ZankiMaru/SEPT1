@@ -91,6 +91,33 @@ public class TestCase {
 	}
 
 	@Test
+   public void testRemoveIO(){
+      model.addRemoveFavourites("Bunbury");
+      model.addRemoveFavourites("Bunbury");
+      model.saveFaveList();
+      
+      String line;
+      BufferedReader br;
+      
+      boolean found = false;
+      try
+      {
+         br = new BufferedReader(new FileReader("favourites.txt"));
+         while((line = br.readLine()) != null){
+            if(line.equalsIgnoreCase("Bunbury"))
+               found = true;
+         };
+         Assert.assertEquals(false, found);
+      }
+      catch (FileNotFoundException e) {
+         e.printStackTrace();
+      }
+      catch (IOException e) {
+         e.printStackTrace();
+      }
+   }
+	
+	@Test
 	public void testNowPanelFillsData()
 	{
 		Interval i = new Interval("20160416193000", 15.1, 11, "0.0");
