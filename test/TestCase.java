@@ -96,7 +96,7 @@ public class TestCase {
 		Interval i = new Interval("20160416193000", 15.1, 11, "0.0");
 		NowPanel np = new NowPanel(i);
 
-		Assert.assertEquals(np.lblMinMax.getText(), "15.1 Â°C");
+		Assert.assertEquals(np.lblMinMax.getText(), "15.1 °C");
 	}
 
 	@Test
@@ -106,6 +106,6 @@ public class TestCase {
 		d.min = (double) 10;
 		d.max = (double) 20;
 		String str = d.getMinMax();
-		Assert.assertEquals(str, "10.0/20.0 Â°C");
+		Assert.assertEquals(str, "10.0/20.0 °C");
 	}
 }
