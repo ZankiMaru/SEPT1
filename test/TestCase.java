@@ -61,7 +61,7 @@ public class TestCase {
 		JButton stationButton = mainMenu.getStationButton("Braidwood");
 		stationButton.doClick();
 		Station station = model.getStation("Braidwood");
-		Assert.assertTrue(station.checkData());
+      Assert.assertEquals(true, station.checkData());
 	}
 	
 	@Test
@@ -75,7 +75,7 @@ public class TestCase {
 		boolean found = false;
       try
       {
-         br = new BufferedReader(new FileReader("favorites.txt"));
+         br = new BufferedReader(new FileReader("favourites.txt"));
          while((line = br.readLine()) != null){
             if(line.equalsIgnoreCase("Bunbury"))
                found = true;

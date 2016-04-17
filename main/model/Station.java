@@ -145,7 +145,7 @@ public class Station
 	}
 	
 	public boolean checkData(){
-		if(list.isEmpty())
+		if(list.isEmpty() && list == null)
 			return false;
 		else
 			return true;
