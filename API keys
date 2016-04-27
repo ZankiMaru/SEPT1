@@ -1,3 +1,5 @@
 http://api.openweathermap.org/data/2.5/forecast?lat=-36.28&lon=143.33&APPID=73649a79abc2d1c4c7f8ef94b656c69d
 Username: sept2016baby
-API Key: 73649a79abc2d1c4c7f8ef94b656c69d
+Open weather map API Key: 73649a79abc2d1c4c7f8ef94b656c69d
+
+Dark sky API key: 46b25d6dfa9543b25e49011c87d42733
