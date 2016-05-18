@@ -1,10 +1,12 @@
 package main.view;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 import main.model.Interval;
 
@@ -23,9 +25,12 @@ public class NowPanel extends JPanel
         
         GridLayout mainLayout = new GridLayout(3, 1);
         GridLayout statsLayout = new GridLayout(2, 3, 25, 5);
+        
+        this.setLayout(new BorderLayout());
         this.setBorder(BorderFactory.createLineBorder(Color.black));
         
         mainPanel = new JPanel(mainLayout);
+        mainPanel.setBorder(new EmptyBorder(5,35,5,35));
         
         statsPanel = new JPanel();
         statsPanel.setLayout(statsLayout);
@@ -47,7 +52,7 @@ public class NowPanel extends JPanel
         mainPanel.add(lblDayLabel);
         mainPanel.add(statsPanel);
         
-        this.add(mainPanel);
+        this.add(mainPanel,BorderLayout.CENTER);
         
     }
     

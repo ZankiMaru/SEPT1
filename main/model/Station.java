@@ -14,6 +14,7 @@ public class Station
 	private String stateName;
 	public String urlName;
     ArrayList<Interval> list = new ArrayList<Interval>();
+    private boolean faved = false;
     
     public Station(String name, String urlName)
     {
@@ -149,5 +150,16 @@ public class Station
 			return false;
 		else
 			return true;
+	}
+	
+	public boolean getFaved(){
+		return faved;
+	}
+	
+	public void toogleFaved(){
+		if(faved)
+			faved = false;
+		else
+			faved = true;
 	}
 }

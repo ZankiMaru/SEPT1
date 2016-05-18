@@ -21,11 +21,15 @@ public class StationView extends JFrame
     DayPanel dpToday, dpYesterday, dpDayBefore;
     StationInfoPanel sipStation;
     MainMenu mainMenu;
+    JTabbedPane tabPanel;
     
     public StationView(Station stationData, MainMenu mainMenu)
     {
         this.mainMenu = mainMenu;
         this.stationData = stationData;
+                
+        tabPanel = new JTabbedPane();
+        
         mainPanel = new JPanel();
         
         fillData();
@@ -37,7 +41,7 @@ public class StationView extends JFrame
         
         GridLayout mainLayout = new GridLayout(5, 1, 10, 10);
 
-        sipStation = new StationInfoPanel(this);
+        sipStation = new StationInfoPanel(this, stationData.getFaved());
         mainPanel.add(sipStation);
         mainPanel.add(nowPanel);
         mainPanel.add(dpToday);
@@ -47,8 +51,12 @@ public class StationView extends JFrame
         mainPanel.setLayout(mainLayout);
         this.setLayout(new GridLayout(1,1));
         
-        this.add(mainPanel);
+      
+        tabPanel.addTab("Overview", null, mainPanel,
+                "Overview Tab");
         
+        this.add(tabPanel);
+
         this.setVisible(true);
     }
     
@@ -71,7 +79,7 @@ class StationInfoPanel extends JPanel
     JLabel lblStationLabel;
     JButton btnRefresh, btnFavourite;
     
-    public StationInfoPanel(StationView stationView)
+    public StationInfoPanel(StationView stationView, boolean faved)
     {
         GridLayout mainLayout = new GridLayout(2, 1, 0, 15);
         FlowLayout buttonsLayout = new FlowLayout(FlowLayout.CENTER, 50, 0);
@@ -83,10 +91,14 @@ class StationInfoPanel extends JPanel
         buttonsPanel = new JPanel();
         buttonsPanel.setLayout(buttonsLayout);
         
-        btnFavourite = new JButton("Favourite");
-        btnFavourite.addActionListener(new ButtonListener(stationView));
+        if(faved)
+        	btnFavourite = new JButton("Unfavourite");
+        else
+        	btnFavourite = new JButton("Favourite");
+        btnFavourite.addActionListener(new ButtonListener(stationView, btnFavourite));
+        
         btnRefresh = new JButton("Refresh");
-        btnRefresh.addActionListener(new ButtonListener(stationView));
+        btnRefresh.addActionListener(new ButtonListener(stationView, btnRefresh));
         
         buttonsPanel.add(btnFavourite);
         buttonsPanel.add(btnRefresh);
@@ -104,8 +116,10 @@ class StationInfoPanel extends JPanel
 
 class ButtonListener implements ActionListener {
     StationView stationView;
-    ButtonListener(StationView stationView) {
+    JButton button;
+    ButtonListener(StationView stationView, JButton button) {
         this.stationView = stationView;
+        this.button = button;
     }
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Refresh")) {
@@ -115,6 +129,12 @@ class ButtonListener implements ActionListener {
         if (e.getActionCommand().equals("Favourite")) {
            //Add or Remove Favourites
            stationView.addRemoveFavourites();
+           button.setText("Unfavourite");
+        }
+        if (e.getActionCommand().equals("Unfavourite")) {
+            //Add or Remove Favourites
+            stationView.addRemoveFavourites();
+            button.setText("Favourite");
         }
     }
 }
