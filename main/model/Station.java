@@ -13,6 +13,7 @@ public class Station
     public String name;
 	private String stateName;
 	public String urlName;
+	public double lon,lat;
     ArrayList<Interval> list = new ArrayList<Interval>();
     
     public Station(String name, String urlName)
@@ -24,14 +25,27 @@ public class Station
     public void getData()
     {    	
         JSONArray stationData = Extraction.getStationData(urlName);
+        
+        JSONObject lonlat = (JSONObject) stationData.get(0);
 
+        this.lon = (double) lonlat.get("lon");
+        this.lat = (double) lonlat.get("lat");  
+        System.out.println(lat + ", " + lon);
+        
+        /* This is a test line of code to call for data */
+//       JSONArray test = Extraction.getStationDataSite(lat, lon);
+//       System.out.println(test);
+        
         /* Error handler in case if the station data is empty */
-       if(stationData.size() != 0){
+       if(stationData.size() != 0){   
           JSONObject nameOfStation = (JSONObject) stationData.get(0);
           this.name = (String) nameOfStation.get("name");
           for(int i = 0; i < stationData.size(); i++){
              JSONObject j = (JSONObject) stationData.get(i);
             
+             this.lon = (double) j.get("lon");
+             this.lat = (double) j.get("lat");
+             
              String localDateTime = (String) j.get("local_date_time_full");
 
              /* Some station have a null as the air temperature */

@@ -30,6 +30,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -199,7 +200,7 @@ public class MainMenu extends JFrame {
 		},0, 60000);
 		
 		addWindowListener(new exitAdapter());
-
+		selectSite();
 	}
 
 	/* addRemoveFavourites passes the station name from stationView to model class. */
@@ -437,6 +438,27 @@ public class MainMenu extends JFrame {
          model.saveFaveList();
       }
 
+	}
+	
+	private void selectSite(){
+		
+		Object[] options = {"forecast.io",
+        "openweathermap.org"};
+		int n = JOptionPane.showOptionDialog(this,
+		"Please select the available site.",
+		"Site selection",
+		JOptionPane.YES_NO_OPTION,
+		JOptionPane.QUESTION_MESSAGE,
+		null,     //do not use a custom Icon
+		options,  //the titles of buttons
+		options[0]); //default button title
+
+		if(n == 1){
+			model.setSite("openweather");
+		}
+		else{
+			model.setSite("forecast");
+		}
 	}
 	
 	
