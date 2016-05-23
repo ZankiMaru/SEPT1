@@ -133,6 +133,13 @@ public class Station
             return new DayData(0, 0, 0, 0);
         } 
     }
+	
+	public void getForecastData(){
+		/*getDataForcast() or getOpenWeather()*/
+		/*Iterate through JSON data*/
+			/*Make new ForecastInterval*/
+			/*Add new ForecastInterval to list*/
+	}
 
 	public void setState(String name){
 		this.stateName = name;
