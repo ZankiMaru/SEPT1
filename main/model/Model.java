@@ -18,9 +18,11 @@ public class Model {
 	private ArrayList<String> faves = new ArrayList<String>();
 	public int xPosition;
 	public int yPosition;
-   String favouritesFile = "favourites.txt";
-   String coordinateFile = "coordinates.txt";
-
+	String favouritesFile = "favourites.txt";
+   	String coordinateFile = "coordinates.txt";
+   	String site = "forecast";
+   	Extraction extraction = new Extraction(this);
+   	
    /* init_data function is called to initialise the model's data. */
 	public void init_data(){
 		JSONArray listOfStates = (JSONArray) Extraction.getAllStates();
@@ -220,5 +222,13 @@ public class Model {
 	public Point getCoordinate(){	   
 	   Point loc = new Point(xPosition, yPosition);
 	   return loc;
+	}
+	
+	public void setSite(String site){
+		this.site = site;
+	}
+	
+	public String getSite(){
+		return this.site;
 	}
 }
