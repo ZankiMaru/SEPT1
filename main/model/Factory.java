@@ -14,6 +14,26 @@ import org.json.simple.parser.ParseException;
 
 public class Factory {
 
+   /* Calling openweather Data will return a JSONArray with structure like
+    * - dt (unix date)
+    *    - main
+    *       - temp
+    *       - etc
+    *    - weather
+    *       - id
+    *       - etc
+    *    - clouds
+    *       - all
+    *    - wind
+    *       - speed
+    *       - deg
+    *    - snow
+    *       -
+    *    - sys
+    *       - pod
+    *    - dt_txt (date as text)
+    *    */
+   
 	public JSONArray getDataOpenweather (double lat, double lon)
 	{
 		String siteUrl = "http://api.openweathermap.org/data/2.5/forecast?lat="+lat+"&lon="+lon+"&APPID=73649a79abc2d1c4c7f8ef94b656c69d";
@@ -57,6 +77,24 @@ public class Factory {
         }
         return null;
 	}
+	
+	/* Calling data from Forecast.io will return JSON array with this structure.
+	 * - time (unix time)
+	 * - summary
+    * - icon
+    * - precipIntensity
+    * - precipProbability
+    * - precipType
+    * - precipAccumulation
+    * - temperature
+    * - apparentTemperature
+    * - dewPoint
+    * - humidity
+    * - windSpeed
+    * - windBearing
+    * - cloudCover
+    * - pressure
+    * - ozone */
 	
 	public JSONArray getDataForecast (double lat, double lon)
 	{
