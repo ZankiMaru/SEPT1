@@ -17,7 +17,14 @@ import org.json.simple.parser.JSONParser;
  * Extraction class will be able to return values from the website's JSON into
  * Model class for the application to use. */
 public class Extraction {
-   
+	
+	static Factory factory = new Factory();
+	static Model model;
+	
+	public Extraction(Model model){
+		this.model = model;
+	}
+	
 	/* printSiteWeather function is the example of how to extract the weather
 	 * of a site using an url as a string. */
 	private static void printSiteWeather(String siteUrl)
@@ -183,6 +190,17 @@ public class Extraction {
         return null;
 	}
 
+	public static JSONArray getStationDataSite(double lat, double lon){
+		String site = model.getSite();
+		JSONArray x = null;
+		if(site.equals("forecast"))
+			x = factory.getDataForecast(lat, lon);
+		if(site.equals("openweather"))
+			x = factory.getDataOpenweather(lat, lon);
+		
+		return x;
+	}
+	
 	/* getAllStates function is used to return a JSONArray containing all of
 	 *  the states data. */
 	public static JSONArray getAllStates() {
