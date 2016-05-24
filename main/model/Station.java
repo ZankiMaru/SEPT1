@@ -15,6 +15,7 @@ public class Station
 	public String urlName;
 	public double lon,lat;
     ArrayList<Interval> list = new ArrayList<Interval>();
+	ArrayList<ForecastInterval> list2 = new ArrayList<ForecastInterval>();
     
     public Station(String name, String urlName)
     {
@@ -135,10 +136,31 @@ public class Station
     }
 	
 	public void getForecastData(){
-		/*getDataForcast() or getOpenWeather()*/
-		/*Iterate through JSON data*/
-			/*Make new ForecastInterval*/
-			/*Add new ForecastInterval to list*/
+		JSONArray data = getStationDataSite(this.lat, this.lon)
+		String site = model.getSite();
+		for(int i = 0; i < data.length(); i++){
+			if(site.equals("forecast")){
+				JSONObject intervalobj = data.getJSONObject(i);
+				long timestamp = intervalobj.getLong("time");
+				double windspeed = intervalobj.getDouble("windSpeed");
+				double temperature = intervalobj.getDouble("temperature");
+				double precipIntensity = intervalobj.getDouble("precipIntensity");
+			};
+			if(site.equals("openweather")){
+				JSONObject intervalobj = data.getJSONObject(i);
+				long timestamp = intervalobj.getLong("dt");
+				double windspeed = intervalobj.getJSONObject("wind").getDouble("speed");
+				double temperature = intervalobj.getJSONObject("main").getDouble("temp");
+				if(data.has("rain")){
+					double precipIntensity = intervalobj.getJSONObject("rain").getDouble("3h");
+				}
+				else{
+					double precipIntensity = 0.0;
+				};
+			};
+			ForecastInterval newInterval = new ForecastInterval(timestamp, temperature, windspeed, precipIntensity);
+			list2.add(newInterval);
+		};
 	}
 
 	public void setState(String name){

@@ -36,7 +36,7 @@ public class Factory {
    
 	public JSONArray getDataOpenweather (double lat, double lon)
 	{
-		String siteUrl = "http://api.openweathermap.org/data/2.5/forecast?lat="+lat+"&lon="+lon+"&APPID=73649a79abc2d1c4c7f8ef94b656c69d";
+		String siteUrl = "http://api.openweathermap.org/data/2.5/forecast?lat="+lat+"&lon="+lon+"&APPID=73649a79abc2d1c4c7f8ef94b656c69d&units=metric";
 		
 		JSONParser parser = new JSONParser();
         String text = "";

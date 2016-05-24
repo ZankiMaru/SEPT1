@@ -39,7 +39,7 @@ public class ForecastInterval
 	}
 	
 	public String getDate(){
-		/*Get hour of interval in string format*/
+		/*Get date of interval in string format*/
 		int date;
 		String dateString;
 		date = this.dateTime.get(Calendar.DATE);
