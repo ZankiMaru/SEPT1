@@ -6,7 +6,7 @@ import java.util.Date;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
+import main.model.*;
 
 public class Station
 {
@@ -14,13 +14,16 @@ public class Station
 	private String stateName;
 	public String urlName;
 	public double lon,lat;
+	private Model model;
     ArrayList<Interval> list = new ArrayList<Interval>();
 	ArrayList<ForecastInterval> list2 = new ArrayList<ForecastInterval>();
-    
-    public Station(String name, String urlName)
+    private boolean faved = false;
+
+    public Station(String name, String urlName, Model model)
     {
        this.name = name;
        this.urlName = urlName;
+       this.model = model;
     }
 
     public void getData()
@@ -135,31 +138,53 @@ public class Station
         } 
     }
 	
+	public boolean getFaved(){
+		return faved;
+	}
+	
+	public void toogleFaved(){
+		if(faved)
+			faved = false;
+		else
+			faved = true;
+	}
+    
 	public void getForecastData(){
-		JSONArray data = getStationDataSite(this.lat, this.lon)
+		JSONArray data = Extraction.getStationDataSite(this.lat, this.lon);
 		String site = model.getSite();
-		for(int i = 0; i < data.length(); i++){
+		for(int i = 0; i < data.size(); i++){
+			long timestamp = 0;
+			double windspeed = 0, temperature = 0, precipIntensity = 0;
 			if(site.equals("forecast")){
-				JSONObject intervalobj = data.getJSONObject(i);
-				long timestamp = intervalobj.getLong("time");
-				double windspeed = intervalobj.getDouble("windSpeed");
-				double temperature = intervalobj.getDouble("temperature");
-				double precipIntensity = intervalobj.getDouble("precipIntensity");
+				JSONObject intervalobj = (JSONObject) data.get(i);
+				
+				System.out.println(intervalobj.get("precipIntensity").toString().equals(0));
+
+				timestamp = (long) intervalobj.get("time");
+				windspeed = (double) intervalobj.get("windSpeed");
+				temperature = (double) intervalobj.get("temperature");
+				precipIntensity = (double) intervalobj.get("precipIntensity");
 			};
 			if(site.equals("openweather")){
-				JSONObject intervalobj = data.getJSONObject(i);
-				long timestamp = intervalobj.getLong("dt");
-				double windspeed = intervalobj.getJSONObject("wind").getDouble("speed");
-				double temperature = intervalobj.getJSONObject("main").getDouble("temp");
-				if(data.has("rain")){
-					double precipIntensity = intervalobj.getJSONObject("rain").getDouble("3h");
+				JSONObject intervalobj = (JSONObject) data.get(i);
+				timestamp = (long) intervalobj.get("dt");
+				windspeed = (double) ((JSONObject) intervalobj.get("wind")).get("speed");
+				temperature = (double) ((JSONObject) intervalobj.get("main")).get("temp");
+				JSONObject rainObj = (JSONObject) intervalobj.get("rain");
+				if(rainObj != null){
+					precipIntensity = (double) rainObj.get("3h");
 				}
 				else{
-					double precipIntensity = 0.0;
+					precipIntensity = 0;
 				};
 			};
 			ForecastInterval newInterval = new ForecastInterval(timestamp, temperature, windspeed, precipIntensity);
+
+			System.out.println(name);
+			newInterval.check();
+			
 			list2.add(newInterval);
+
 		};
 	}
 

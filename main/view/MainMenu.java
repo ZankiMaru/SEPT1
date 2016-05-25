@@ -372,6 +372,7 @@ public class MainMenu extends JFrame {
 	            public void run() {
 	               Station station = model.getStation(arg0.getActionCommand());
 	               station.getData();
+//	               station.getForecastData();
 	               JFrame frame = new StationView(station, mainMenu);
 	               frame.setLocationRelativeTo(mainMenu);
 	               frame.setVisible(true);
@@ -440,6 +441,7 @@ public class MainMenu extends JFrame {
 
 	}
 	
+	
 	private void selectSite(){
 		
 		Object[] options = {"forecast.io",
@@ -460,6 +462,5 @@ public class MainMenu extends JFrame {
 			model.setSite("forecast");
 		}
 	}
-	
 	
 }

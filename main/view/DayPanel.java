@@ -1,4 +1,5 @@
 package main.view;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -21,9 +22,12 @@ public class DayPanel extends JPanel
     {
         GridLayout mainLayout = new GridLayout(3, 1);
         GridLayout statsLayout = new GridLayout(2, 3, 25, 5);
-        this.setBorder(BorderFactory.createLineBorder(Color.black));
         
+        this.setLayout(new BorderLayout());
+        this.setBorder(BorderFactory.createLineBorder(Color.black));
+
         mainPanel = new JPanel(mainLayout);
+        mainPanel.setBorder(new EmptyBorder(5,35,5,35));
         
         statsPanel = new JPanel();
         statsPanel.setLayout(statsLayout);
@@ -46,7 +50,7 @@ public class DayPanel extends JPanel
         mainPanel.add(lblDayLabel);
         mainPanel.add(statsPanel);
         
-        this.add(mainPanel);
+        this.add(mainPanel,BorderLayout.CENTER);
 
     }
     

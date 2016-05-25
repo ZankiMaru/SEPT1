@@ -38,7 +38,7 @@ public class Model {
 				JSONObject station = (JSONObject)listOfStations.get(j);
 				String stationName = (String) station.get("city");
 				String jsonUrl = (String) station.get("url");
-				Station singleStation = new Station(stationName, jsonUrl);
+				Station singleStation = new Station(stationName, jsonUrl, this);
 				
 				singleStation.setState(stateName);
 				newState.addStation(stationName, singleStation);
