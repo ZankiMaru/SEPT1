@@ -9,7 +9,8 @@ public class ForecastInterval
 	starts at 7am today and ends at 7am 2 days later (every hour)
 	intervals from OpenWeather
 	starts from 9am today and ends at 9pm 4 days later (every 3 hours)*/
-
+	
+	public long tstamp;
 	public Calendar dateTime = Calendar.getInstance();
 	public double temp, wind, rain;
 	
@@ -18,51 +19,43 @@ public class ForecastInterval
 		this.temp = temperature;
 		this.wind = windspeed;
 		this.rain = precipIntensity;
-		this.timex = timestamp;
+		this.tstamp = timestamp;
 	}
 	
 	public void check(){
 		SimpleDateFormat format1 = new SimpleDateFormat("dd/MM - yyyy");
 //		System.out.println(format1.format(this.dateTime.getTime()));
-		System.out.println(timex);
+		System.out.println(tstamp);
 		System.out.println(temp + "c | " + wind + " | " + rain);
 	}
 	
-	public String getHour(){
+	public int getHour(){
 		/*Get hour of interval in string format*/
 		int hour;
-		String hourString;
 		hour = this.dateTime.get(Calendar.HOUR_OF_DAY);
-		hourString = String.valueOf(hour);
-		return hourString;
+		return hour;
 	}
 	
-	public String getMonth(){
+	public int getMonth(){
 		/*Get month of interval in string format*/
 		int month;
-		String monthString;
 		month = this.dateTime.get(Calendar.MONTH);
 		month += 1;
-		monthString = String.valueOf(month);
-		return monthString;
+		return month;
 	}
 	
-	public String getDate(){
+	public int getDate(){
 		/*Get date of interval in string format*/
 		int date;
-		String dateString;
 		date = this.dateTime.get(Calendar.DATE);
-		dateString = String.valueOf(date);
-		return dateString;
+		return date;
 	}
 	
-	public String getYear(){
+	public int getYear(){
 		/*Get year of interval in string format*/
 		int year;
-		String yearString;
 		year = this.dateTime.get(Calendar.YEAR);
-		yearString = String.valueof(year);
-		return yearString;
+		return year;
 	}
 	
 }

@@ -18,6 +18,7 @@ public class Station
 	private Model model;
     ArrayList<Interval> list = new ArrayList<Interval>();
 	ArrayList<ForecastInterval> list2 = new ArrayList<ForecastInterval>();
+	ArrayList<ForecastDayData> forecastDays = new ArrayList<ForecastDayData>();/*Used to populate forecast table*/
     private boolean faved = false;
 
     public Station(String name, String urlName, Model model)
@@ -153,6 +154,7 @@ public class Station
 	public void getForecastData(){
 		JSONArray data = Extraction.getStationDataSite(this.lat, this.lon);
 		String site = model.getSite();
+		/*Fill up hourly/3hour interval list*/
 		for(int i = 0; i < data.size(); i++){
 			long timestamp = 0;
 			double windspeed = 0.0, temperature = 0.0, precipIntensity = 0.0;
@@ -184,6 +186,43 @@ public class Station
 			list2.add(newInterval);
 
 		};
+		
+		/*Fill up day-by-day list (based on the hourly/3hour interval list)*/
+		Calendar today = Calendar.getInstance();
+		
+		for(int i = 0; i < 5; i++){
+			ArrayList<ForecastInterval> cache = new ArrayList<ForecastInterval>();
+			ForecastDayData newDay = new ForecastDayData();
+			/*Fill cache (an array of intervals within the same day)*/
+			for( ForecastInterval hourInterval : this.list2 ){
+				if( (hourInterval.get(Calendar.DAY_OF_YEAR)) == (today.get(Calendar.DAY_OF_YEAR) + i) ){
+					cache.add(hourInterval);
+				}
+			}
+			/*Get min/max data from cache to add ForecastDayData object to forecastDays list*/
+			if (cache.size() != 0){
+				newDay.datetime = cache.get(0).date();
+				newDay.min = cache.get(0).temp();
+				newDay.max = cache.get(0).temp();
+				newDay.wind = cache.get(0).wind();
+				newDay.rain = cache.get(0).rain();
+				for(ForecastInterval i : cache){
+					if(newDay.min > i.temp)
+						newDay.min = i.temp;
+					if(newDay.max < i.temp)
+						newDay.max = i.temp;
+					if(newDay.wind < i.wind)
+						newDay.wind = i.wind;
+					if(newDay.rain < i.rain)
+						newDay.rain = i.rain;
+				}
+				this.forecastDays.add(newDay);
+			}
+			else{
+				break;
+			};	
+		}
+		
 	}
 
 	public void setState(String name){
