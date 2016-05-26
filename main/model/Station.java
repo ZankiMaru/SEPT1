@@ -3,6 +3,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.lang.*;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -154,16 +155,13 @@ public class Station
 		String site = model.getSite();
 		for(int i = 0; i < data.size(); i++){
 			long timestamp = 0;
-			double windspeed = 0, temperature = 0, precipIntensity = 0;
+			double windspeed = 0.0, temperature = 0.0, precipIntensity = 0.0;
 			if(site.equals("forecast")){
 				JSONObject intervalobj = (JSONObject) data.get(i);
-				
-				System.out.println(intervalobj.get("precipIntensity").toString().equals(0));
-
 				timestamp = (long) intervalobj.get("time");
-				windspeed = (double) intervalobj.get("windSpeed");
-				temperature = (double) intervalobj.get("temperature");
-				precipIntensity = (double) intervalobj.get("precipIntensity");
+				windspeed = ((Number) intervalobj.get("windSpeed")).doubleValue();
+				temperature = ((Number) intervalobj.get("temperature")).doubleValue();
+				precipIntensity = ((Number) intervalobj.get("precipIntensity")).doubleValue();
 			};
 			if(site.equals("openweather")){
 				JSONObject intervalobj = (JSONObject) data.get(i);
@@ -175,7 +173,7 @@ public class Station
 					precipIntensity = (double) rainObj.get("3h");
 				}
 				else{
-					precipIntensity = 0;
+					precipIntensity = 0.0;
 				};
 			};
 			ForecastInterval newInterval = new ForecastInterval(timestamp, temperature, windspeed, precipIntensity);
