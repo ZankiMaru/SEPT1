@@ -9,8 +9,8 @@ public class ForecastInterval
 	intervals from OpenWeather
 	starts from 9am today and ends at 9pm 4 days later (every 3 hours)*/
 	
-	Calendar dateTime = Calendar.getInstance();
-	double temp, wind, rain;
+	public Calendar dateTime = Calendar.getInstance();
+	public double temp, wind, rain;
 	
 	public ForecastInterval(long timestamp, double temperature, double windspeed, double precipIntensity){
 		this.dateTime.setTimeInMillis(timestamp);
@@ -45,6 +45,15 @@ public class ForecastInterval
 		date = this.dateTime.get(Calendar.DATE);
 		dateString = String.valueof(date);
 		return dateString;
+	}
+	
+	public String getYear(){
+		/*Get year of interval in string format*/
+		int year;
+		String yearString;
+		year = this.dateTime.get(Calendar.YEAR);
+		yearString = String.valueof(year);
+		return yearString;
 	}
 	
 }
