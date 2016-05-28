@@ -184,7 +184,6 @@ public class Station
 			};
 			ForecastInterval newInterval = new ForecastInterval(timestamp, temperature, windspeed, precipIntensity);
 
-			System.out.println(name);
 			newInterval.check();
 			
 			list2.add(newInterval);
@@ -224,6 +223,7 @@ public class Station
 				this.forecastDays.add(newDay);
 			}
 			else{
+				dataLogger.info(i + " number of days populated.");
 				break;
 			};	
 		}

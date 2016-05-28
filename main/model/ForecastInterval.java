@@ -24,9 +24,9 @@ public class ForecastInterval
 	
 	public void check(){
 		SimpleDateFormat format1 = new SimpleDateFormat("dd/MM - yyyy");
-//		System.out.println(format1.format(this.dateTime.getTime()));
-		System.out.println(tstamp);
-		System.out.println(temp + "c | " + wind + " | " + rain);
+		System.out.println("Date: "+this.getDate()+"/"+this.getMonth()+"/"+this.getYear()+" Hour: "+this.getHour());
+		System.out.println("Timestamp: " + tstamp);
+		System.out.println("Measurements: " + temp + " | " + wind + " | " + rain);
 	}
 	
 	public int getHour(){
