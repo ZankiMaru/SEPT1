@@ -195,26 +195,26 @@ public class Station
 			ForecastDayData newDay = new ForecastDayData();
 			/*Fill cache (an array of intervals within the same day)*/
 			for( ForecastInterval hourInterval : this.list2 ){
-				if( (hourInterval.get(Calendar.DAY_OF_YEAR)) == (today.get(Calendar.DAY_OF_YEAR) + i) ){
+				if( (hourInterval.dateTime.get(Calendar.DAY_OF_YEAR)) == (today.get(Calendar.DAY_OF_YEAR) + i) ){
 					cache.add(hourInterval);
 				}
 			}
 			/*Get min/max data from cache to add ForecastDayData object to forecastDays list*/
 			if (cache.size() != 0){
-				newDay.datetime = cache.get(0).date();
-				newDay.min = cache.get(0).temp();
-				newDay.max = cache.get(0).temp();
-				newDay.wind = cache.get(0).wind();
-				newDay.rain = cache.get(0).rain();
-				for(ForecastInterval i : cache){
-					if(newDay.min > i.temp)
-						newDay.min = i.temp;
-					if(newDay.max < i.temp)
-						newDay.max = i.temp;
-					if(newDay.wind < i.wind)
-						newDay.wind = i.wind;
-					if(newDay.rain < i.rain)
-						newDay.rain = i.rain;
+				newDay.dateTime = cache.get(0).dateTime;
+				newDay.min = cache.get(0).temp;
+				newDay.max = cache.get(0).temp;
+				newDay.wind = cache.get(0).wind;
+				newDay.rain = cache.get(0).rain;
+				for(ForecastInterval j : cache){
+					if(newDay.min > j.temp)
+						newDay.min = j.temp;
+					if(newDay.max < j.temp)
+						newDay.max = j.temp;
+					if(newDay.wind < j.wind)
+						newDay.wind = j.wind;
+					if(newDay.rain < j.rain)
+						newDay.rain = j.rain;
 				}
 				this.forecastDays.add(newDay);
 			}
