@@ -77,8 +77,7 @@ public class StationView extends JFrame
         mainPanel2.setLayout(mainLayout);
 
         //Forecast Data
-        //mainForecastPanel = new JPanel(new GridLayout(stationData.forecastDays.size(), 1));
-        mainForecastPanel = new JPanel(new GridLayout(1, 1));
+        mainForecastPanel = new JPanel(new GridLayout(stationData.forecastDays.size(), 1));
         for (ForecastDayData day : stationData.forecastDays)
         {
         	ForecastPanel panel = new ForecastPanel(day);
