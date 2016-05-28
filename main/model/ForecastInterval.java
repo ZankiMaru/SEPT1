@@ -15,7 +15,7 @@ public class ForecastInterval
 	public double temp, wind, rain;
 	
 	public ForecastInterval(long timestamp, double temperature, double windspeed, double precipIntensity){
-		this.dateTime.setTimeInMillis(timestamp);
+		this.dateTime.setTimeInMillis(timestamp*1000L);
 		this.temp = temperature;
 		this.wind = windspeed;
 		this.rain = precipIntensity;

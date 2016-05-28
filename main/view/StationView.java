@@ -11,6 +11,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import main.model.ForecastDayData;
 import main.model.Station;
 
 
@@ -25,6 +26,8 @@ public class StationView extends JFrame
     MainMenu mainMenu;
     JTabbedPane tabPanel;
     StationView stationView = this;
+    
+    JPanel mainForecastPanel;
     
     public StationView(Station stationData, MainMenu mainMenu)
     {
@@ -73,19 +76,35 @@ public class StationView extends JFrame
         
         mainPanel2.setLayout(mainLayout);
 
+        //Forecast Data
+        if (stationData.forecastDays.size() == 0) //If there's no data
+        {
+        	mainForecastPanel = new JPanel(new GridLayout(4, 1));
+            mainForecastPanel.add(sipStation);
+            JLabel nodata = new JLabel("No Data");
+            nodata.setHorizontalAlignment(SwingConstants.CENTER); 
+        	mainForecastPanel.add(nodata);
+        }
+        else
+        {
+        	mainForecastPanel = new JPanel(new GridLayout(stationData.forecastDays.size() + 1, 1));
+            mainForecastPanel.add(sipStation);
+	        for (ForecastDayData day : stationData.forecastDays)
+	        {
+	        	ForecastPanel panel = new ForecastPanel(day);
+	        	mainForecastPanel.add(panel);
+	        }
+        }
         
-        
-        
-        
-        tabPanel.addTab("Overview", null, mainPanel,
-                "Overview Tab");
+        tabPanel.addTab("Overview", null, mainPanel, "Overview Tab");
+        tabPanel.addTab("Forecast", null, mainForecastPanel, "Forecast Tab");
         tabPanel.addTab("Graph", null, mainPanel2, "Graph Tab");
 
         ChangeListener changeListener = new ChangeListener() {
             public void stateChanged(ChangeEvent changeEvent) {
             	
             	System.out.println(tabPanel.getSelectedIndex());
-            	if(tabPanel.getSelectedIndex() == 0)
+            	if(tabPanel.getSelectedIndex() == 0 || tabPanel.getSelectedIndex() == 1)
             		stationView.setBounds(stationView.getX(), stationView.getY(), 350, 700);
             	else
             		stationView.setBounds(stationView.getX(), stationView.getY(), 900, 700);

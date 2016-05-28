@@ -21,7 +21,7 @@ public class Station
 	private Model model;
     ArrayList<Interval> list = new ArrayList<Interval>();
 	ArrayList<ForecastInterval> list2 = new ArrayList<ForecastInterval>();
-	ArrayList<ForecastDayData> forecastDays = new ArrayList<ForecastDayData>();/*Used to populate forecast table*/
+	public ArrayList<ForecastDayData> forecastDays = new ArrayList<ForecastDayData>();/*Used to populate forecast table*/
     private boolean faved = false;
 
     public Station(String name, String urlName, Model model)

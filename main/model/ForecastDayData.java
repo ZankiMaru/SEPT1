@@ -22,10 +22,14 @@ public class ForecastDayData
     }
     
     public String strMin()
-    {return Double.toString(min);}
+    {
+    	return new DecimalFormat("#.#").format(min);
+    }
     
     public String strMax()
-    {return Double.toString(max);}
+    {
+    	return new DecimalFormat("#.#").format(max);
+    }
     
     public String strRain()
     {return Double.toString(rain);}
@@ -33,7 +37,7 @@ public class ForecastDayData
     
     public String getMinMax()
     {
-        return strMin() + "/" + strMax() + " Â°C";
+        return strMin() + "/" + strMax() + " °C";
     }
     
     public String getWind()
