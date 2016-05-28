@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.lang.*;
+import java.util.logging.Logger;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -11,6 +12,8 @@ import main.model.*;
 
 public class Station
 {
+	public static Logger dataLogger = Logger.getLogger(Station.class.getName());
+	
     public String name;
 	private String stateName;
 	public String urlName;
@@ -78,6 +81,7 @@ public class Station
             
              list.add(interval);
           }
+		  dataLogger.info("Successfully populated observation interval list.");
        }
     }
     
@@ -186,6 +190,7 @@ public class Station
 			list2.add(newInterval);
 
 		};
+		dataLogger.info("Successfully populated forecast interval list.");
 		
 		/*Fill up day-by-day list (based on the hourly/3hour interval list)*/
 		Calendar today = Calendar.getInstance();
@@ -222,7 +227,7 @@ public class Station
 				break;
 			};	
 		}
-		
+		dataLogger.info("Successfully populated forecast day list.");
 	}
 
 	public void setState(String name){
