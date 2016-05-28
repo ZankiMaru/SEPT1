@@ -8,6 +8,8 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.logging.Logger;
+
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.ParseException;
@@ -17,6 +19,8 @@ import org.json.simple.parser.JSONParser;
  * Extraction class will be able to return values from the website's JSON into
  * Model class for the application to use. */
 public class Extraction {
+	
+	public static Logger dataLogger = Logger.getLogger(Station.class.getName());
 	
 	static Factory factory = new Factory();
 	static Model model;
@@ -46,12 +50,16 @@ public class Extraction {
 				inputLine.append(x);
 			}	
 			text = inputLine.toString();
+			dataLogger.info("Received Data");
+
 		}
 		catch (MalformedURLException e1){
 			e1.printStackTrace();
+			dataLogger.info("There was a Malformed URL Exception");
 		} 
 		catch (IOException e){
 			e.printStackTrace();
+			dataLogger.info("There was an IO Exception");
 		}	
       
 		/* Next is to parse the whole page string as a JSONObject and extract
@@ -71,6 +79,7 @@ public class Extraction {
 				JSONObject cities = (JSONObject) datas.get(j);
 				System.out.printf("%s - %s\n",cities.get("local_date_time"), cities.get("air_temp"));
 			}
+			dataLogger.info("Parsed JSON");
 		}catch(ParseException pe){
 			System.out.println(pe);
 		}
@@ -98,6 +107,7 @@ public class Extraction {
 					}
 				}
 			}
+			
 		}catch(ParseException pe){
 			System.out.println(pe);
 		}
@@ -133,6 +143,7 @@ public class Extraction {
 					System.out.println(cities.get("url"));
 				}
 			}
+			dataLogger.info("Read stations into model");
 		}catch(ParseException pe){
 			System.out.println(pe);
 		}
@@ -165,6 +176,7 @@ public class Extraction {
                 inputLine.append(x);
             }   
             text = inputLine.toString();
+            dataLogger.info("Received Data");
         }
         catch (MalformedURLException e1){
             e1.printStackTrace();
@@ -182,6 +194,7 @@ public class Extraction {
             JSONObject obs = (JSONObject) result.get("observations");
             
             JSONArray datas = (JSONArray) obs.get("data");
+            dataLogger.info("JSON Parsed");
             return datas;
             
         }catch(ParseException pe){
@@ -197,7 +210,7 @@ public class Extraction {
 			x = factory.getDataForecast(lat, lon);
 		if(site.equals("openweather"))
 			x = factory.getDataOpenweather(lat, lon);
-		
+		dataLogger.info("Received Forecast Data");
 		return x;
 	}
 	
@@ -222,7 +235,7 @@ public class Extraction {
       catch (IOException e){
          e.printStackTrace();
       }
-      
+
       return result;
 	}
 	

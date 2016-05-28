@@ -20,7 +20,7 @@ public class Station
 	public double lon,lat;
 	private Model model;
     ArrayList<Interval> list = new ArrayList<Interval>();
-	ArrayList<ForecastInterval> list2 = new ArrayList<ForecastInterval>();
+	public ArrayList<ForecastInterval> list2 = new ArrayList<ForecastInterval>();
 	public ArrayList<ForecastDayData> forecastDays = new ArrayList<ForecastDayData>();/*Used to populate forecast table*/
     private boolean faved = false;
 

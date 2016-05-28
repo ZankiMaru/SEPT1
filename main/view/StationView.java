@@ -26,6 +26,7 @@ public class StationView extends JFrame
     MainMenu mainMenu;
     JTabbedPane tabPanel;
     StationView stationView = this;
+    GraphPanel graphPanel;
     
     JPanel mainForecastPanel;
     
@@ -96,9 +97,11 @@ public class StationView extends JFrame
 	        }
         }
         
+        graphPanel = new GraphPanel(stationData);
+        
         tabPanel.addTab("Overview", null, mainPanel, "Overview Tab");
         tabPanel.addTab("Forecast", null, mainForecastPanel, "Forecast Tab");
-        tabPanel.addTab("Graph", null, mainPanel2, "Graph Tab");
+        tabPanel.addTab("Graph", null, graphPanel, "Graph Tab");
 
         ChangeListener changeListener = new ChangeListener() {
             public void stateChanged(ChangeEvent changeEvent) {
