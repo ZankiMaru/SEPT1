@@ -49,6 +49,7 @@ public class StationView extends JFrame
         
         GridLayout mainLayout = new GridLayout(5, 1, 10, 10);
 
+        //Overview Panel
         sipStation = new StationInfoPanel(this, stationData.getFaved());
         mainPanel.add(sipStation);
         mainPanel.add(nowPanel);
@@ -80,7 +81,8 @@ public class StationView extends JFrame
         //Forecast Data
         if (stationData.forecastDays.size() == 0) //If there's no data
         {
-        	mainForecastPanel = new JPanel(new GridLayout(4, 1));
+        	mainForecastPanel = new JPanel(new GridLayout(4, 1, 10, 10));
+            mainForecastPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
             mainForecastPanel.add(sipStation);
             JLabel nodata = new JLabel("No Data");
             nodata.setHorizontalAlignment(SwingConstants.CENTER); 
@@ -88,7 +90,8 @@ public class StationView extends JFrame
         }
         else
         {
-        	mainForecastPanel = new JPanel(new GridLayout(stationData.forecastDays.size() + 1, 1));
+        	mainForecastPanel = new JPanel(new GridLayout(stationData.forecastDays.size() + 1, 1, 10, 10));
+            mainForecastPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
             mainForecastPanel.add(sipStation);
 	        for (ForecastDayData day : stationData.forecastDays)
 	        {
