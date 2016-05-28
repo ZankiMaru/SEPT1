@@ -77,13 +77,24 @@ public class StationView extends JFrame
         mainPanel2.setLayout(mainLayout);
 
         //Forecast Data
-        mainForecastPanel = new JPanel(new GridLayout(stationData.forecastDays.size(), 1));
-        for (ForecastDayData day : stationData.forecastDays)
+        if (stationData.forecastDays.size() == 0) //If there's no data
         {
-        	ForecastPanel panel = new ForecastPanel(day);
-        	mainForecastPanel.add(panel);
+        	mainForecastPanel = new JPanel(new GridLayout(4, 1));
+            mainForecastPanel.add(sipStation);
+            JLabel nodata = new JLabel("No Data");
+            nodata.setHorizontalAlignment(SwingConstants.CENTER); 
+        	mainForecastPanel.add(nodata);
         }
-        
+        else
+        {
+        	mainForecastPanel = new JPanel(new GridLayout(stationData.forecastDays.size() + 1, 1));
+            mainForecastPanel.add(sipStation);
+	        for (ForecastDayData day : stationData.forecastDays)
+	        {
+	        	ForecastPanel panel = new ForecastPanel(day);
+	        	mainForecastPanel.add(panel);
+	        }
+        }
         
         tabPanel.addTab("Overview", null, mainPanel, "Overview Tab");
         tabPanel.addTab("Forecast", null, mainForecastPanel, "Forecast Tab");
