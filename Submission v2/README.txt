@@ -13,6 +13,9 @@ https://github.com/rmit-s3494185-ben-lee/SEPT1.git
 
 Design Pattern Used:
 MVC
+Architecture is divided between the back-end(model) and view-controller(view).
+This type of architecture made it more straightforward to divide tasks needed
+to complete functional requirements.
 
 What was changed/added in the code:
 - New class ForecastDayData
@@ -22,10 +25,8 @@ What was changed/added in the code:
 - New method getForecastData() in Station class
 - New method selectSite in MainMenu class
 - New variable String site in Model class
-- New JTabbedpane in StationView class
-- ...
+- New JTabbedpanel in StationView class
+- New logging implemented throughout classes
 
-What documentation was added/changed:
-- New sequence diagram; Sequence diagram 1.pdf
-- New system level testing document; System level testing.pdf
-- ...
+Notes:
+-Log output is find in console.
