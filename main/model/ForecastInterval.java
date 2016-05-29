@@ -32,7 +32,7 @@ public class ForecastInterval
 	public int getHour(){
 		/*Get hour of interval in string format*/
 		int hour;
-		hour = this.dateTime.get(Calendar.HOUR_OF_DAY);
+		hour = this.dateTime.get(Calendar.HOUR);
 		return hour;
 	}
 	
@@ -57,5 +57,12 @@ public class ForecastInterval
 		year = this.dateTime.get(Calendar.YEAR);
 		return year;
 	}
+	
+	  public int getAMPM(){
+	      /*Get year of interval in string format*/
+	      int year;
+	      year = this.dateTime.get(Calendar.AM_PM);
+	      return year;
+	   }
 	
 }

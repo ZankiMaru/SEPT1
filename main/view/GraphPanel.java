@@ -5,7 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
+
 import org.jfree.chart.*;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.CategoryLabelPositions;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.RefineryUtilities;
@@ -17,15 +21,19 @@ public class GraphPanel extends JPanel{
 	
 	Station stationData;
 	JButton rdbTemp, rdbWind, rdbRain;
-	JFreeChart chartActive, chartTemp, chartWind, chartRain;
+	static JFreeChart chartActive;
+   JFreeChart chartTemp;
+   JFreeChart chartWind;
+   JFreeChart chartRain;
 	JPanel redrawPanel;
 	ChartPanel panel;
 	
 	public GraphPanel(Station stationData)
 	{
-		this.stationData = stationData;
+
+	   this.stationData = stationData;
 		this.setLayout(new BorderLayout());
-		
+
 		//Chart
 		chartTemp = createChart("Temperature", "Temp °C", createTempDataset());
 		chartWind = createChart("Wind", "Km/h", createWindDataset());
@@ -48,30 +56,34 @@ public class GraphPanel extends JPanel{
 		mainPanel.add(rdbWind);
 		mainPanel.add(rdbRain);
 
-		
-		
 		this.add(mainPanel, BorderLayout.PAGE_END);
 	}
 	
 	private CategoryDataset createTempDataset() 
 	{
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
-		for (ForecastInterval inter: stationData.list2)
-			dataset.setValue( inter.temp, "Temp °C", inter.dateTime);  
+		for (ForecastInterval inter: stationData.list2){
+	       if(inter.getAMPM() == 0){
+	          dataset.setValue( inter.temp, "Temp °C", Integer.toString(inter.getDate()) + ":" + Integer.toString(inter.getHour()) + "AM");  
+	       }
+	       else
+	          dataset.setValue( inter.temp, "Temp °C", Integer.toString(inter.getDate()) + ":" + Integer.toString(inter.getHour()) + "PM");  
+		}
 		return dataset;         
 	}
 	private CategoryDataset createWindDataset() 
 	{
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
-		for (ForecastInterval inter: stationData.list2)
-			dataset.setValue( inter.wind, "Km/h", inter.dateTime);  
+		for (ForecastInterval inter: stationData.list2){
+			dataset.setValue( inter.wind, "Km/h", Integer.toString(inter.getDate()) + "-" + Integer.toString(inter.getHour())); 
+		}
 		return dataset;         
 	}
 	private CategoryDataset createRainDataset() 
 	{
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
 		for (ForecastInterval inter: stationData.list2)
-			dataset.setValue( inter.rain, "mm", inter.dateTime);  
+			dataset.setValue( inter.rain, "mm", Integer.toString(inter.getDate()) + "/" + inter.getMonth() + ":" + Integer.toString(inter.getHour()));  
 		return dataset;         
 	}
 	
@@ -83,7 +95,12 @@ public class GraphPanel extends JPanel{
 				 "Date",		// Bottom Axis label
 				 axis,			// Right Axis label
 				 dataset);
+		 
+		 CategoryPlot x = (CategoryPlot) chart.getPlot();
+		 CategoryAxis domainAx = x.getDomainAxis();
+		 domainAx.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
 
+		 
 		 return chart;
 	   }
 

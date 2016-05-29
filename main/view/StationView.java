@@ -11,6 +11,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.jfree.chart.ChartPanel;
+
 import main.model.ForecastDayData;
 import main.model.Station;
 
@@ -26,11 +28,11 @@ public class StationView extends JFrame
     MainMenu mainMenu;
     JTabbedPane tabPanel;
     StationView stationView = this;
-    GraphPanel graphPanel;
+    JPanel graphPanel;
     
     JPanel mainForecastPanel;
     
-    public StationView(Station stationData, MainMenu mainMenu)
+    public StationView(final Station stationData, MainMenu mainMenu)
     {
         this.mainMenu = mainMenu;
         this.stationData = stationData;
@@ -101,22 +103,23 @@ public class StationView extends JFrame
         }
         
         graphPanel = new GraphPanel(stationData);
-        
-        tabPanel.addTab("Overview", null, mainPanel, "Overview Tab");
-        tabPanel.addTab("Forecast", null, mainForecastPanel, "Forecast Tab");
-        tabPanel.addTab("Graph", null, graphPanel, "Graph Tab");
+
 
         ChangeListener changeListener = new ChangeListener() {
             public void stateChanged(ChangeEvent changeEvent) {
                if(tabPanel.getSelectedIndex() == 0 || tabPanel.getSelectedIndex() == 1)
             		stationView.setBounds(stationView.getX(), stationView.getY(), 350, 700);
             	else
-            		stationView.setBounds(stationView.getX(), stationView.getY(), 900, 700);
-
+            		stationView.setBounds(stationView.getX(), stationView.getY(), 1100, 700);
             }
-          };
+        };
+        
+        
+        tabPanel.addTab("Overview", null, mainPanel, "Overview Tab");
+        tabPanel.addTab("Forecast", null, mainForecastPanel, "Forecast Tab");
+        tabPanel.addTab("Graph", null, graphPanel, "Graph Tab");
 
-          tabPanel.addChangeListener(changeListener);
+        tabPanel.addChangeListener(changeListener);
 
         
         this.add(tabPanel);
