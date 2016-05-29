@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
 import main.model.*;
 
 public class Station
@@ -172,11 +173,11 @@ public class Station
 			if(site.equals("openweather")){
 				JSONObject intervalobj = (JSONObject) data.get(i);
 				timestamp = (long) intervalobj.get("dt");
-				windspeed = (double) ((JSONObject) intervalobj.get("wind")).get("speed");
-				temperature = (double) ((JSONObject) intervalobj.get("main")).get("temp");
+				windspeed = ((Number)((JSONObject)(intervalobj.get("wind"))).get("speed")).doubleValue();
+				temperature = ((Number)((JSONObject)(intervalobj.get("main"))).get("temp")).doubleValue();
 				JSONObject rainObj = (JSONObject) intervalobj.get("rain");
-				if(rainObj != null){
-					precipIntensity = (double) rainObj.get("3h");
+				if((rainObj != null) && ((rainObj.get("h3")) != null)){
+					precipIntensity = ((Number)rainObj.get("3h")).doubleValue();
 				}
 				else{
 					precipIntensity = 0.0;
