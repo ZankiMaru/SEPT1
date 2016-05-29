@@ -3,6 +3,7 @@ import java.util.*;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import java.util.logging.Logger;
 import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,6 +15,8 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
 public class Model {
+	public static Logger dataLogger = Logger.getLogger(Model.class.getName());
+	
 	private HashMap<String, State> listOfStates = new HashMap<String, State>();
 	private ArrayList<String> faves = new ArrayList<String>();
 	public int xPosition;
@@ -44,6 +47,7 @@ public class Model {
 				newState.addStation(stationName, singleStation);
 			};
 		};
+		dataLogger.info("Initialized model data.");
 	}
 
 	/* init_faveList function is used to initialise the model's favourites.
@@ -78,6 +82,7 @@ public class Model {
       catch (IOException e) {
          e.printStackTrace();
       }
+	  dataLogger.info("Initialized favourite list.");
 	}
 	
 	/* addFave function used to add station to fave list. */
@@ -101,6 +106,8 @@ public class Model {
 	      faves.remove(stationIndex);
 	   else
 	      addFave(station);
+	  
+	  dataLogger.info("Updated favourite list.");
 	}
 		
 	/* saveFaveList save the favourites from the list to text file at the end. */
@@ -119,6 +126,7 @@ public class Model {
       {
          e.printStackTrace();
       }
+	  dataLogger.info("Stored favourite list.");
 	}
 	
 	/* getAllFave returns an ArrayList of stations from favourites. */
