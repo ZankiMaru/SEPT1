@@ -18,8 +18,11 @@ What was changed/added in the code:
 - New class ForecastDayData
 - New class ForecastInterval
 - New class Factory; contains getDataOpenweather() and getDataForecast()
+- New class GraphPanel
 - New method getForecastData() in Station class
+- New method selectSite in MainMenu class
 - New variable String site in Model class
+- New JTabbedpane in StationView class
 - ...
 
 What documentation was added/changed:
