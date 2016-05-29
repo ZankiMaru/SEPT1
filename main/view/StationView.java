@@ -108,9 +108,7 @@ public class StationView extends JFrame
 
         ChangeListener changeListener = new ChangeListener() {
             public void stateChanged(ChangeEvent changeEvent) {
-            	
-            	System.out.println(tabPanel.getSelectedIndex());
-            	if(tabPanel.getSelectedIndex() == 0 || tabPanel.getSelectedIndex() == 1)
+               if(tabPanel.getSelectedIndex() == 0 || tabPanel.getSelectedIndex() == 1)
             		stationView.setBounds(stationView.getX(), stationView.getY(), 350, 700);
             	else
             		stationView.setBounds(stationView.getX(), stationView.getY(), 900, 700);

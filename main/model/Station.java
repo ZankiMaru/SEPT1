@@ -40,7 +40,6 @@ public class Station
 
         this.lon = (double) lonlat.get("lon");
         this.lat = (double) lonlat.get("lat");  
-        System.out.println(lat + ", " + lon);
         
         /* This is a test line of code to call for data */
 //       JSONArray test = Extraction.getStationDataSite(lat, lon);
@@ -183,10 +182,7 @@ public class Station
 					precipIntensity = 0.0;
 				};
 			};
-			ForecastInterval newInterval = new ForecastInterval(timestamp, temperature, windspeed, precipIntensity);
-
-			newInterval.check();
-			
+			ForecastInterval newInterval = new ForecastInterval(timestamp, temperature, windspeed, precipIntensity);			
 			list2.add(newInterval);
 
 		};

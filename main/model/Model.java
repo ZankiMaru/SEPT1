@@ -147,7 +147,7 @@ public class Model {
 				return selectedStation;
 			};
 		};
-		System.out.println("Station doesn't exist.\n");
+		dataLogger.info("Station doesn't exist.\n");
 		return null;
 	}
 	
