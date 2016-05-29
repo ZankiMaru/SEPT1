@@ -29,4 +29,4 @@ What was changed/added in the code:
 - New logging implemented throughout classes
 
 Notes:
--Log output is find in console.
+-Log output is found in console output.
